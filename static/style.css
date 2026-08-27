@@ -87,7 +87,10 @@ body {
 
 .sidebar .image img {
   width: 50px;
-  border-radius: 6px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: transparent;
 }
 
 .sidebar .text {

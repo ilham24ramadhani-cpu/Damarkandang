@@ -1063,10 +1063,11 @@ def get_user_role_from_session():
 
 @app.route('/brand-assets/logo.png')
 def brand_logo_damarkandang():
-    """Logo Damarkandang untuk invoice/PDF."""
+    """Logo Damarkandang untuk invoice/PDF (ikon navbar)."""
     static_img = join(_APP_ROOT_DIR, 'static', 'img')
-    if exists(join(static_img, 'logo.png')):
-        return send_from_directory(static_img, 'logo.png', mimetype='image/png')
+    for name in ('logo_navbar.png', 'logo.png'):
+        if exists(join(static_img, name)):
+            return send_from_directory(static_img, name, mimetype='image/png')
     img_dir = join(_APP_ROOT_DIR, 'Image')
     if exists(join(img_dir, 'logo.png')):
         return send_from_directory(img_dir, 'logo.png', mimetype='image/png')
