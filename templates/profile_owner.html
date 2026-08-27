@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile Saya - Argopuro Walida</title>
+    <title>Profile Saya - Damarkandang</title>
     <!-- Boxicons -->
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -39,51 +39,8 @@
     <div class="sidebar-overlay"></div>
 
     <!-- ===== Sidebar Start ===== -->
-    <nav class="sidebar close">
-      <header>
-        <div class="image-text">
-          <a
-            href="{{ url_for('dashboard_owner') }}"
-            class="d-flex align-items-center text-decoration-none"
-            style="color: inherit"
-          >
-            <span class="image">
-              <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" />
-            </span>
-
-            <div class="text header-text">
-              <span class="name">Argopuro Walida</span>
-              <span class="text profession">Owner Dashboard</span>
-            </div>
-          </a>
-        </div>
-
-        <i class="bx bx-chevron-right toggle"></i>
-      </header>
-
-      <div class="menu-bar">
-        <ul class="menu-links">
-          <li>
-            <a href="{{ url_for('dashboard_owner') }}"
-              ><i class="bi bi-house-door"></i
-              ><span class="text">Dashboard</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_laporan_owner') }}"
-              ><i class="bi bi-file-text"></i
-              ><span class="text">Laporan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('profile_owner') }}"
-              ><i class="bi bi-person-circle"></i
-              ><span class="text">Profil</span></a
-            >
-          </li>
-        </ul>
-      </div>
-    </nav>
+    {% set active_menu = 'profil' %}
+    {% include 'partials/sidebar_owner.html' %}
     <!-- ===== Sidebar End ===== -->
     <section class="home">
       <!-- Navbar -->
@@ -97,7 +54,7 @@
           </button>
 
           <!-- Brand -->
-          <span class="fw-bold fs-5">Argopuro Walida System <span class="badge bg-warning text-dark ms-2">Owner</span></span>
+          <span class="fw-bold fs-5">Damarkandang System <span class="badge bg-warning text-dark ms-2">Owner</span></span>
 
           <!-- Search Bar -->
           <form class="d-flex ms-auto me-3" role="search">

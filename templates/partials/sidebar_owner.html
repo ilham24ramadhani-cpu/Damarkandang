@@ -1,0 +1,22 @@
+<nav class="sidebar close">
+  <header>
+    <div class="image-text">
+      <a href="{{ url_for('dashboard_owner') }}" class="d-flex align-items-center text-decoration-none" style="color:inherit">
+        <span class="image"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" /></span>
+        <div class="text header-text">
+          <span class="name">Damarkandang</span>
+          <span class="text profession">Owner</span>
+        </div>
+      </a>
+    </div>
+    <i class="bx bx-chevron-right toggle"></i>
+  </header>
+  <div class="menu-bar">
+    <ul class="menu-links">
+      <li><a href="{{ url_for('dashboard_owner') }}" class="{% if active_menu=='dashboard' %}active{% endif %}"><i class="bi bi-speedometer2"></i><span class="text">Dashboard</span></a></li>
+      <li><a href="{{ url_for('kelola_keuangan') }}" class="{% if active_menu=='keuangan' %}active{% endif %}"><i class="bi bi-currency-dollar"></i><span class="text">Keuangan</span></a></li>
+      <li><a href="{{ url_for('kelola_laporan_owner') }}" class="{% if active_menu=='laporan' %}active{% endif %}"><i class="bi bi-file-earmark-bar-graph"></i><span class="text">Laporan</span></a></li>
+      <li><a href="{{ url_for('profile_owner') }}" class="{% if active_menu=='profil' %}active{% endif %}"><i class="bi bi-person-circle"></i><span class="text">Profil</span></a></li>
+    </ul>
+  </div>
+</nav>

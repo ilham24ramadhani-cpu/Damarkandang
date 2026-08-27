@@ -535,12 +535,12 @@ if (window.API && window.API.Bahan && window.API.Produksi && window.API.Users &&
   const BahanAPI = {
     async getAll() {
       // MONGODB ONLY - NO FALLBACK
-      return await apiCall("/bahan");
+      return await apiCall("/bahan-produksi");
     },
 
     async getById(id) {
       // MONGODB ONLY - NO FALLBACK
-      return await apiCall(`/bahan/${id}`);
+      return await apiCall(`/bahan-produksi/${id}`);
     },
 
     async create(data) {
@@ -549,24 +549,24 @@ if (window.API && window.API.Bahan && window.API.Produksi && window.API.Users &&
       // Frontend should NOT send 'id' field
       const dataWithoutId = { ...data };
       delete dataWithoutId.id; // Remove id if present (backend will generate)
-      return await apiCall("/bahan", "POST", dataWithoutId);
+      return await apiCall("/bahan-produksi", "POST", dataWithoutId);
     },
 
     async update(id, data) {
       // MONGODB ONLY - NO FALLBACK
       const dataWithoutId = { ...data };
       delete dataWithoutId.id; // Remove id from update data
-      return await apiCall(`/bahan/${id}`, "PUT", dataWithoutId);
+      return await apiCall(`/bahan-produksi/${id}`, "PUT", dataWithoutId);
     },
 
     async delete(id) {
       // MONGODB ONLY - NO FALLBACK
-      return await apiCall(`/bahan/${id}`, "DELETE");
+      return await apiCall(`/bahan-produksi/${id}`, "DELETE");
     },
 
     async getSisa(idBahan, prosesPengolahan) {
       // MONGODB ONLY — untuk bahan dengan prosesBahan, query ?proses= wajib
-      let path = `/bahan/sisa/${encodeURIComponent(idBahan)}`;
+      let path = `/bahan-produksi/sisa/${encodeURIComponent(idBahan)}`;
       if (prosesPengolahan != null && String(prosesPengolahan).trim() !== "") {
         path += `?proses=${encodeURIComponent(String(prosesPengolahan).trim())}`;
       }
@@ -578,12 +578,12 @@ if (window.API && window.API.Bahan && window.API.Produksi && window.API.Users &&
       const q = new URLSearchParams();
       q.set("proses", String(prosesPengolahan || "").trim());
       if (idProduksi) q.set("idProduksi", String(idProduksi).trim());
-      return await apiCall(`/bahan/untuk-produksi?${q.toString()}`);
+      return await apiCall(`/bahan-produksi/untuk-produksi?${q.toString()}`);
     },
 
     async getNextId() {
       // Get next auto-generated idBahan (BHN001, BHN002, ...)
-      const res = await apiCall("/bahan/next-id");
+      const res = await apiCall("/bahan-produksi/next-id");
       return res?.idBahan || null;
     },
 
@@ -593,7 +593,7 @@ if (window.API && window.API.Bahan && window.API.Produksi && window.API.Users &&
      */
     async syncProduksiProses(bahanDocId) {
       return await apiCall(
-        `/bahan/${encodeURIComponent(bahanDocId)}/sync-produksi-proses`,
+        `/bahan-produksi/${encodeURIComponent(bahanDocId)}/sync-produksi-proses`,
         "POST",
         {},
       );

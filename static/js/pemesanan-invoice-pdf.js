@@ -213,7 +213,7 @@ const BS_SECONDARY_RGB = [108, 117, 125];
 const BS_BADGE_TEXT_DARK_RGB = [33, 37, 41];
 const BS_WHITE_RGB = [255, 255, 255];
 
-/** Logo + kop surat Argopuro Walida untuk PDF invoice */
+/** Logo + kop surat Damarkandang untuk PDF invoice */
 async function fetchArgopuroLogoForPdf() {
   try {
     const url = `${window.location.origin}/brand-assets/logo.png`;
@@ -253,7 +253,7 @@ function pdfDrawArgopuroInvoiceHeader(doc, logoDataUrl, p, opts) {
   const LINE_ADDR = 3.85 * sp + 0.3;
   const GAP_AFTER_KOP = opts && opts.singlePage ? 2.2 : 2.8;
 
-  const nama = "Argopuro Walida";
+  const nama = "Damarkandang";
   const kontak = "+62 857-0766-1006";
   const alamat =
     "Ds. Tlogosari Rt 06/Rw 01, Kecamatan Sumbermalang, Kabupaten Situbondo";
@@ -1349,7 +1349,7 @@ function pdfDrawInvoiceBody(doc, p, y, opts) {
     doc.setLineWidth(0.1);
     pdfInvSetFont(doc, "bold");
     doc.setTextColor(...INV_GREEN_RGB);
-    doc.text("Argopuro Walida", xC, yNama, { align: "center" });
+    doc.text("Damarkandang", xC, yNama, { align: "center" });
     doc.setTextColor(0, 0, 0);
     pdfInvSetFont(doc, "normal");
     return bTop + boxH;

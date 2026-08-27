@@ -1,0 +1,245 @@
+{% extends 'cafe/base.html' %} {% block title %}Kelola Bahan — Damarkandang{%
+endblock %} {% block content %}
+<div
+  class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+>
+  <div>
+    <h1>Kelola Bahan</h1>
+    <p class="text-muted mb-0">
+      Daftarkan bahan masuk: pilih jenis dan isi jumlah — harga mengikuti master
+      di Kelola Data.
+    </p>
+  </div>
+  <button
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#modalForm"
+  >
+    <i class="bi bi-plus-lg"></i> Tambah Bahan
+  </button>
+</div>
+<div class="card cafe-card">
+  <div class="card-body">
+    <div class="row g-2 mb-3">
+      <div class="col-md-4">
+        <input
+          type="search"
+          id="searchInput"
+          class="form-control"
+          placeholder="Cari jenis bahan..."
+        />
+      </div>
+      <div class="col-md-3">
+        <select id="statusFilter" class="form-select">
+          <option value="aktif" selected>Hanya Aktif</option>
+          <option value="">Semua Status</option>
+          <option value="nonaktif">Nonaktif</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Jenis Bahan</th>
+            <th>Kategori</th>
+            <th>Stok</th>
+            <th>Harga</th>
+            <th>Total Pengeluaran</th>
+            <th>Status Stok</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div id="pagination" class="d-flex justify-content-end"></div>
+  </div>
+</div>
+<div class="modal fade" id="modalForm" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Tambah Bahan</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <form id="formData" novalidate>
+        <div class="modal-body">
+          <input type="hidden" id="editId" />
+          <div id="wrapJenisBaru" class="mb-3">
+            <label class="form-label">Jenis Bahan *</label>
+            <select id="idJenis" class="form-select"></select>
+            <div class="form-text">
+              Daftar jenis diinput di Kelola Data → Jenis Bahan. Pilih jenis
+              yang sudah ada untuk menambah stok lagi.
+            </div>
+          </div>
+          <div id="wrapJenisEdit" class="mb-3 d-none">
+            <label class="form-label">Jenis Bahan</label>
+            <input type="text" id="jenisLabel" class="form-control" readonly />
+          </div>
+          <div id="wrapStokMasuk">
+            <div id="wrapStokMasukNonCairan">
+              <div class="row g-2 mb-2">
+                <div class="col-7">
+                  <label class="form-label">Jumlah Bahan Masuk *</label>
+                  <input
+                    type="number"
+                    id="jumlahMasuk"
+                    class="form-control"
+                    min="0.001"
+                    step="any"
+                  />
+                </div>
+                <div class="col-5">
+                  <label class="form-label">Satuan</label>
+                  <select id="satuanMasuk" class="form-select">
+                    <option value="kg">Kg</option>
+                    <option value="gram">Gram</option>
+                  </select>
+                </div>
+              </div>
+              <div class="alert alert-light border small py-2 mb-3">
+                <div class="mb-1">
+                  <strong>Referensi harga:</strong>
+                  <span id="infoHargaPerKg">-</span
+                  ><span id="infoHargaSuffix">/kg</span>
+                </div>
+                <div>
+                  <strong>Stok masuk:</strong>
+                  <span id="previewGramMasuk">0 gram</span>
+                </div>
+                <div>
+                  <strong>Total Pengeluaran:</strong>
+                  <span id="previewTotalMasuk">Rp0</span>
+                </div>
+                <small class="text-muted" id="hintHitungMasuk"
+                  >Dihitung otomatis: jumlah kg × harga/kg dari master jenis
+                  bahan</small
+                >
+              </div>
+            </div>
+            <div id="wrapStokMasukPcs" class="d-none">
+              <div class="mb-2">
+                <label class="form-label">Jumlah Pcs *</label>
+                <input
+                  type="number"
+                  id="jumlahPcs"
+                  class="form-control"
+                  min="1"
+                  step="1"
+                />
+              </div>
+              <div class="alert alert-light border small py-2 mb-3">
+                <div class="mb-1">
+                  <strong>Referensi kemasan:</strong>
+                  <span id="infoGramPerPcs">-</span> ·
+                  <span id="infoHargaPerPcs">-</span>/pcs
+                </div>
+                <div>
+                  <strong>Stok masuk:</strong>
+                  <span id="previewGramPcs">0 gram</span>
+                </div>
+                <div>
+                  <strong>Total Pengeluaran:</strong>
+                  <span id="previewTotalPcs">Rp0</span>
+                </div>
+                <small class="text-muted"
+                  >Dihitung otomatis: jumlah pcs × isi gram × harga/pcs (Kopral
+                  &amp; kemasan sejenis)</small
+                >
+              </div>
+            </div>
+            <div id="wrapStokMasukCairan" class="d-none">
+              <div class="mb-2">
+                <label class="form-label">Jumlah Pack *</label>
+                <input
+                  type="number"
+                  id="jumlahPack"
+                  class="form-control"
+                  min="1"
+                  step="1"
+                />
+              </div>
+              <div class="alert alert-light border small py-2 mb-3">
+                <div class="mb-1">
+                  <strong>Referensi pack:</strong>
+                  <span id="infoKgPerPack">-</span> ·
+                  <span id="infoHargaPerPack">-</span>/pack
+                </div>
+                <div>
+                  <strong>Stok masuk:</strong>
+                  <span id="previewGramCairan">0 gram</span>
+                </div>
+                <div>
+                  <strong>Total Pengeluaran:</strong>
+                  <span id="previewTotalCairan">Rp0</span>
+                </div>
+                <small class="text-muted"
+                  >Dihitung otomatis: jumlah pack × berat/kg pack ×
+                  harga/pack</small
+                >
+              </div>
+            </div>
+          </div>
+          <div id="wrapStokEdit" class="mb-3 d-none">
+            <label class="form-label">Stok Saat Ini</label>
+            <input type="text" id="stokSaatIni" class="form-control" readonly />
+            <div class="form-text">
+              Tambah stok lagi lewat tombol Tambah Bahan, atau melalui menu
+              Pembelian Bahan
+            </div>
+          </div>
+          <div id="wrapHargaPerKg" class="mb-3 d-none">
+            <label class="form-label">Harga per Kg (Rp)</label
+            ><input type="text" id="hargaPerKg" class="form-control" readonly />
+            <div class="form-text">
+              Harga mengikuti master jenis bahan di Kelola Data
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label
+            ><select id="status" class="form-select">
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal</button
+          ><button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalDelete" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Hapus <strong id="deleteLabel">bahan</strong> permanen?</p>
+        <p class="small text-muted mb-0">
+          ID <code id="deleteIdLabel"></code> akan kosong (tidak dipakai ulang).
+          Pembelian & pengeluaran terkait ikut dihapus.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button
+        ><button class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="{{ url_for('static', filename='js/cafe_bahan.js') }}?v=20260821e"></script>
+{% endblock %}

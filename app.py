@@ -60,7 +60,7 @@ def _extract_db_name_from_mongodb_uri(uri: str):
     """
     Ambil nama database dari MongoDB URI (bagian setelah '/' sebelum '?').
     Contoh:
-      mongodb+srv://.../DB_Walida?retryWrites=true -> DB_Walida
+      mongodb+srv://.../DB_DAMARKANDANG?retryWrites=true -> DB_DAMARKANDANG
     """
     if not uri:
         return None
@@ -104,7 +104,16 @@ if _db_from_uri:
 # Sanitasi akhir (trim + hilangkan spasi) sebelum dipakai di client[DB_NAME]
 DB_NAME = _sanitize_db_name(DB_NAME)
 
-client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=8080)
+client = MongoClient(
+    MONGODB_URI,
+    serverSelectionTimeoutMS=8080,
+    connectTimeoutMS=8000,
+    socketTimeoutMS=20000,
+    maxPoolSize=50,
+    minPoolSize=1,
+    retryWrites=True,
+    compressors='zlib',
+)
 db = client[DB_NAME]
 try:
     client.admin.command('ping')
@@ -1053,13 +1062,15 @@ def get_user_role_from_session():
 # ==================== BRAND ASSETS (invoice, dll.) ====================
 
 @app.route('/brand-assets/logo.png')
-def brand_logo_argopuro():
-    """Logo Argopuro Walida untuk invoice PDF (Image/logo.png)."""
+def brand_logo_damarkandang():
+    """Logo Damarkandang untuk invoice/PDF."""
+    static_img = join(_APP_ROOT_DIR, 'static', 'img')
+    if exists(join(static_img, 'logo.png')):
+        return send_from_directory(static_img, 'logo.png', mimetype='image/png')
     img_dir = join(_APP_ROOT_DIR, 'Image')
-    logo_path = join(img_dir, 'logo.png')
-    if not exists(logo_path):
-        return jsonify({'error': 'Logo tidak ditemukan'}), 404
-    return send_from_directory(img_dir, 'logo.png', mimetype='image/png')
+    if exists(join(img_dir, 'logo.png')):
+        return send_from_directory(img_dir, 'logo.png', mimetype='image/png')
+    return jsonify({'error': 'Logo tidak ditemukan'}), 404
 
 
 # ==================== MAIN ROUTES ====================
@@ -1143,27 +1154,27 @@ def dashboard_owner():
 @app.route('/kelola/pengguna')
 def kelola_pengguna():
     """User management page"""
-    return render_template('kelola_pengguna.html')
+    from app.config import CAFE_NAME
+    return render_template('pengguna/index.html', cafe_name=CAFE_NAME, active_menu='pengguna')
 
 @app.route('/kelola/bahan')
 def kelola_bahan():
-    """Material management page"""
-    return render_template('kelola_bahan.html')
+    """Kelola bahan baku cafe"""
+    return redirect(url_for('cafe_pages.bahan_page'))
 
 @app.route('/kelola/bahan/karyawan')
 def kelola_bahan_karyawan():
-    """Material management page - Karyawan"""
-    return render_template('kelola_bahan_karyawan.html')
+    return redirect(url_for('cafe_pages.bahan_page'))
 
 @app.route('/kelola/produksi')
 def kelola_produksi():
-    """Production management page"""
-    return render_template('kelola_produksi.html')
+    """Fitur produksi Argopuro tidak dipakai di cafe Damarkandang."""
+    return redirect(url_for('dashboard'))
 
 @app.route('/kelola/produksi/karyawan')
 def kelola_produksi_karyawan():
-    """Production management page - Karyawan"""
-    return render_template('kelola_produksi_karyawan.html')
+    """Karyawan cafe diarahkan ke penjualan, bukan input produksi."""
+    return redirect(url_for('kelola_pemesanan'))
 
 @app.route('/kelola/hasil-produksi')
 def kelola_hasil_produksi():
@@ -1177,48 +1188,57 @@ def kelola_hasil_produksi_karyawan():
 
 @app.route('/kelola/pemasok')
 def kelola_pemasok():
-    """Supplier management page"""
-    return render_template('kelola_pemasok.html')
+    return redirect(url_for('dashboard'))
 
 @app.route('/kelola/stok')
 def kelola_stok():
-    """Stock management page"""
-    return render_template('kelola_stok.html')
+    """Stok bahan baku cafe"""
+    from app.config import CAFE_NAME
+    return render_template('stok/index.html', cafe_name=CAFE_NAME, active_menu='stok')
 
 @app.route('/kelola/keuangan')
 def kelola_keuangan():
-    """Financial management page"""
-    return render_template('kelola_keuangan.html')
+    from app.config import CAFE_NAME
+    return render_template(
+        'keuangan/unified.html',
+        cafe_name=CAFE_NAME,
+        active_menu='keuangan',
+    )
 
 @app.route('/kelola/data')
 def kelola_data():
-    """Master data management page"""
-    return render_template('kelola_data.html')
+    from app.config import CAFE_NAME
+    return render_template('kelola_data/cafe_master.html', cafe_name=CAFE_NAME, active_menu='kelola-data')
 
 @app.route('/kelola/sanitasi')
 def kelola_sanitasi():
-    """Sanitation management page"""
-    return render_template('kelola_sanitasi.html')
+    return redirect(url_for('dashboard'))
 
 @app.route('/kelola/sanitasi/karyawan')
 def kelola_sanitasi_karyawan():
-    """Sanitation management page - Karyawan"""
-    return render_template('kelola_sanitasi_karyawan.html')
+    return redirect(url_for('dashboard_karyawan'))
 
 @app.route('/kelola/laporan')
 def kelola_laporan():
-    """Report page"""
-    return render_template('kelola_laporan.html')
+    """Rekapan & laporan cafe Damarkandang"""
+    from app.config import CAFE_NAME
+    return render_template('laporan/index.html', cafe_name=CAFE_NAME, active_menu='laporan')
 
 @app.route('/kelola/laporan/owner')
 def kelola_laporan_owner():
-    """Report page - Owner"""
-    return render_template('kelola_laporan_owner.html')
+    """Laporan cafe untuk Owner"""
+    from app.config import CAFE_NAME
+    return render_template('laporan/index.html', cafe_name=CAFE_NAME, active_menu='laporan')
 
 @app.route('/kelola/pemesanan')
 def kelola_pemesanan():
-    """Pemesanan management page"""
-    return render_template('kelola_pemesanan.html')
+    from app.config import CAFE_NAME
+    return render_template('kasir/dashboard.html', cafe_name=CAFE_NAME, active_menu='kasir')
+
+@app.route('/kelola/pemesanan/tambah')
+def kelola_pemesanan_tambah():
+    from app.config import CAFE_NAME
+    return render_template('kasir/tambah.html', cafe_name=CAFE_NAME, active_menu='kasir')
 
 @app.route('/profile')
 def profile():
@@ -2357,18 +2377,18 @@ def _sync_keuangan_pengeluaran_bahan_masuk(bahan_doc):
         # Jangan gagalkan proses bahan hanya karena sinkron keuangan
         print(f"⚠️ [SYNC KEUANGAN<-BAHAN] ERROR: {str(e)}")
 
-@app.route('/api/bahan', methods=['GET'])
+@app.route('/api/bahan-produksi', methods=['GET'])
 def get_bahan():
-    """Get all bahan data"""
+    """Get all bahan data (produksi kopi — legacy)"""
     try:
-        bahan = list(db.bahan.find().sort('id', 1))
+        bahan = list(db.bahan.find({'idBahan': {'$exists': True}}).sort('id', 1))
         print(f"📊 [BAHAN GET] Retrieved {len(bahan)} documents from MongoDB collection 'bahan'")
         return jsonify(json_serialize(bahan)), 200
     except Exception as e:
         print(f"❌ [BAHAN GET] ERROR: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/bahan/next-id', methods=['GET'])
+@app.route('/api/bahan-produksi/next-id', methods=['GET'])
 def get_next_id_bahan():
     """Get next auto-generated idBahan (format BHN001, BHN002, ...)"""
     try:
@@ -2378,7 +2398,7 @@ def get_next_id_bahan():
         print(f"❌ [BAHAN NEXT-ID] ERROR: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/bahan/<bahan_id>', methods=['GET'])
+@app.route('/api/bahan-produksi/<bahan_id>', methods=['GET'])
 def get_bahan_by_id(bahan_id):
     """Get bahan by ID or idBahan"""
     try:
@@ -2395,7 +2415,7 @@ def get_bahan_by_id(bahan_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/bahan', methods=['POST'])
+@app.route('/api/bahan-produksi', methods=['POST'])
 def create_bahan():
     """Create new bahan.
     Format utama: prosesBahan[] (per proses: prosesPengolahan + detailKloter[]), hargaPerKg sekali, idBahan auto.
@@ -2487,7 +2507,7 @@ def create_bahan():
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/bahan/<bahan_id>', methods=['PUT'])
+@app.route('/api/bahan-produksi/<bahan_id>', methods=['PUT'])
 def update_bahan(bahan_id):
     """Update bahan"""
     try:
@@ -2628,7 +2648,7 @@ def update_bahan(bahan_id):
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/bahan/<bahan_id>/sync-produksi-proses', methods=['POST'])
+@app.route('/api/bahan-produksi/<bahan_id>/sync-produksi-proses', methods=['POST'])
 def post_sync_produksi_proses_from_bahan_master(bahan_id):
     """
     Dinonaktifkan: proses pada dokumen produksi tidak lagi diselaraskan dari master bahan.
@@ -2659,7 +2679,7 @@ def post_sync_produksi_proses_from_bahan_master(bahan_id):
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/bahan/<bahan_id>', methods=['DELETE'])
+@app.route('/api/bahan-produksi/<bahan_id>', methods=['DELETE'])
 def delete_bahan(bahan_id):
     """Delete bahan"""
     try:
@@ -2700,7 +2720,7 @@ def delete_bahan(bahan_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/bahan/sisa/<id_bahan>', methods=['GET'])
+@app.route('/api/bahan-produksi/sisa/<id_bahan>', methods=['GET'])
 def get_sisa_bahan(id_bahan):
     """Sisa berat: per jalur proses (?proses=Nama) jika bahan punya prosesBahan; legacy = satu pool."""
     try:
@@ -2761,7 +2781,7 @@ def get_sisa_bahan(id_bahan):
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/bahan/untuk-produksi', methods=['GET'])
+@app.route('/api/bahan-produksi/untuk-produksi', methods=['GET'])
 def get_bahan_untuk_produksi():
     """
     Bahan yang boleh dipilih untuk produksi baru: punya baris proses yang diminta,
@@ -6262,13 +6282,17 @@ def get_stok_for_pemesanan():
 
 import os
 
+# Modul Kelola Bahan & Keuangan — Cafe Damarkandang
+from app import init_cafe_module
+init_cafe_module(app, db, client)
+
 if __name__ == "__main__":
     # Railway akan otomatis mengisi variabel PORT ini
     port_raw = (
         os.environ.get("PORT")
         or os.environ.get("RAILWAY_HTTP_PORT")
         or os.environ.get("RAILWAY_TCP_PORT")
-        or "8080"
+        or "5003"
     )
     port = int(port_raw)
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=os.environ.get('FLASK_DEBUG', '1') == '1')

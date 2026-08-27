@@ -8,7 +8,7 @@ async function loadUserProfile() {
   const sessionRole = sessionStorage.getItem("userRole") || "Karyawan";
   const sessionUserId = sessionStorage.getItem("userId");
   const sessionEmail =
-    sessionStorage.getItem("userEmail") || `${sessionUsername}@argopuro.com`;
+    sessionStorage.getItem("userEmail") || `${sessionUsername}@damarkandang.com`;
 
   // Try to find user in API or localStorage users by username first (most important)
   let users = [];

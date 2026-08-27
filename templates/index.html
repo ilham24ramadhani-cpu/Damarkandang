@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Admin - Argopuro Walida</title>
+    <title>Dashboard Admin - Damarkandang</title>
     <!-- Boxicons -->
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -39,8 +39,6 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='bootstrap-primary-override.css') }}"
     />
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script
       src="{{ url_for('static', filename='js/api-service.js') }}"
       defer
@@ -51,95 +49,8 @@
     <div class="sidebar-overlay"></div>
 
     <!-- ===== Sidebar Start ===== -->
-    <nav class="sidebar close">
-      <header>
-        <div class="image-text">
-          <a
-            href="{{ url_for('dashboard') }}"
-            class="d-flex align-items-center text-decoration-none"
-            style="color: inherit"
-          >
-            <span class="image">
-              <img
-                src="{{ url_for('static', filename='img/logo.png') }}"
-                alt="logo"
-              />
-            </span>
-
-            <div class="text header-text">
-              <span class="name">Argopuro Walida</span>
-            </div>
-          </a>
-        </div>
-
-        <i class="bx bx-chevron-right toggle"></i>
-      </header>
-
-      <div class="menu-bar">
-        <ul class="menu-links">
-          <li>
-            <a href="{{ url_for('kelola_pengguna') }}"
-              ><i class="bi bi-person-circle"></i
-              ><span class="text">Kelola Pengguna</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_bahan') }}">
-              <i class="bi bi-flower1"></i>
-              <span class="text">Kelola Bahan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_produksi') }}"
-              ><i class="bi bi-building-gear"></i
-              ><span class="text">Kelola Produksi</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_stok') }}"
-              ><i class="bi bi-boxes"></i
-              ><span class="text">Kelola Stok</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_pemasok') }}"
-              ><i class="bi bi-person-heart"></i
-              ><span class="text">Kelola Pemasok</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_sanitasi') }}"
-              ><i class="bi bi-shield-check"></i
-              ><span class="text">Kelola Sanitasi</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_keuangan') }}"
-              ><i class="bi bi-currency-dollar"></i
-              ><span class="text">Kelola Keuangan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_laporan') }}"
-              ><i class="bi bi-file-text"></i
-              ><span class="text">Kelola Laporan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_data') }}"
-              ><i class="bi bi-database"></i
-              ><span class="text">Kelola Data</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_pemesanan') }}"
-              ><i class="bi bi-cart"></i
-              ><span class="text">Kelola Pemesanan</span></a
-            >
-          </li>
-        </ul>
-      </div>
-    </nav>
+    {% set active_menu = 'dashboard' %}
+    {% include 'partials/sidebar_damarkandang.html' %}
     <!-- ===== Sidebar End ===== -->
     <section class="home">
       <!-- Navbar -->
@@ -153,7 +64,7 @@
           </button>
 
           <!-- Brand -->
-          <span class="fw-bold fs-5">Argopuro Walida System <span class="badge bg-primary ms-2">Admin</span></span>
+          <span class="fw-bold fs-5">Damarkandang System <span class="badge bg-primary ms-2">Admin</span></span>
 
           <!-- Search Bar -->
           <form class="d-flex ms-auto me-3" role="search">
@@ -332,15 +243,13 @@
             class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-4 gap-3"
           >
             <div>
-              <p class="text-uppercase text-muted mb-1 small">
-                Manajemen Sistem
-              </p>
-              <h2 class="mb-0">Dashboard Admin</h2>
+              <p class="text-uppercase text-muted mb-1 small">Damarkandang Cafe</p>
+              <h2 class="mb-0">Dashboard</h2>
             </div>
             <div class="d-flex gap-2 flex-wrap">
               <button
                 class="btn btn-outline-primary"
-                onclick="refreshAllStatistics(true)"
+                onclick="loadCafeDashboardHome && loadCafeDashboardHome()"
                 id="refreshBtn"
                 title="Refresh Statistik"
               >
@@ -352,138 +261,6 @@
           <!-- Statistics Cards -->
           <div class="row g-4 mb-4" id="statisticsCards">
             <!-- Cards akan diisi oleh JavaScript -->
-          </div>
-
-          <!-- Charts Section -->
-          <div class="row g-4 mb-4">
-            <!-- Grafik Bahan -->
-            <div class="col-lg-6">
-              <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                  <div
-                    class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-start align-items-lg-center"
-                  >
-                    <h5 class="mb-0 fw-bold">
-                      <i class="bi bi-graph-up me-2"></i>Trend Bahan Masuk
-                    </h5>
-                    <div class="d-flex align-items-center gap-2 w-100 w-lg-auto">
-                      <label
-                        class="small text-muted mb-0 text-nowrap"
-                        for="dashboardBahanPeriodeFilter"
-                        >Periode</label
-                      >
-                      <select
-                        id="dashboardBahanPeriodeFilter"
-                        class="form-select form-select-sm ms-auto"
-                        style="max-width: 11rem"
-                        aria-label="Filter periode trend bahan masuk"
-                      >
-                        <option value="all">Semua waktu</option>
-                        <option value="7d">7 hari terakhir</option>
-                        <option value="30d">30 hari terakhir</option>
-                        <option value="90d">3 bulan terakhir</option>
-                        <option value="180d">6 bulan terakhir</option>
-                        <option value="365d">1 tahun terakhir</option>
-                      </select>
-                    </div>
-                  </div>
-                  <small class="text-muted d-block mt-2 mb-0">Sumbu X = pemasok · Sumbu Y = kg (total pada periode filter).</small>
-                </div>
-                <div
-                  class="card-body"
-                  style="height: 300px; position: relative"
-                >
-                  <canvas id="bahanChart"></canvas>
-                </div>
-              </div>
-            </div>
-
-            <!-- Grafik Produksi -->
-            <div class="col-lg-6">
-              <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                  <div
-                    class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-start align-items-lg-center"
-                  >
-                    <h5 class="mb-0 fw-bold">
-                      <i class="bi bi-graph-up-arrow me-2"></i>Trend Produksi
-                    </h5>
-                    <div class="d-flex align-items-center gap-2 w-100 w-lg-auto">
-                      <label
-                        class="small text-muted mb-0 text-nowrap"
-                        for="dashboardProduksiPeriodeFilter"
-                        >Periode</label
-                      >
-                      <select
-                        id="dashboardProduksiPeriodeFilter"
-                        class="form-select form-select-sm ms-auto"
-                        style="max-width: 11rem"
-                        aria-label="Filter periode trend produksi"
-                      >
-                        <option value="all">Semua waktu</option>
-                        <option value="7d">7 hari terakhir</option>
-                        <option value="30d">30 hari terakhir</option>
-                        <option value="90d">3 bulan terakhir</option>
-                        <option value="180d">6 bulan terakhir</option>
-                        <option value="365d">1 tahun terakhir</option>
-                      </select>
-                    </div>
-                  </div>
-                  <small class="text-muted d-block mt-2 mb-0">Sumbu X = proses pengolahan · Sumbu Y = kg (total pada periode filter).</small>
-                </div>
-                <div
-                  class="card-body"
-                  style="height: 300px; position: relative"
-                >
-                  <canvas id="produksiChart"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Grafik pemesanan per pembeli -->
-          <div class="row g-4 mb-4">
-            <div class="col-lg-12">
-              <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                  <div
-                    class="d-flex flex-column flex-lg-row gap-2 justify-content-between align-items-start align-items-lg-center"
-                  >
-                    <h5 class="mb-0 fw-bold">
-                      <i class="bi bi-cart4 me-2"></i>Trend Pemesanan per Pembeli
-                    </h5>
-                    <div class="d-flex align-items-center gap-2 w-100 w-lg-auto">
-                      <label
-                        class="small text-muted mb-0 text-nowrap"
-                        for="dashboardPemesananPeriodeFilter"
-                        >Periode</label
-                      >
-                      <select
-                        id="dashboardPemesananPeriodeFilter"
-                        class="form-select form-select-sm ms-auto"
-                        style="max-width: 11rem"
-                        aria-label="Filter periode trend pemesanan per pembeli"
-                      >
-                        <option value="all">Semua waktu</option>
-                        <option value="7d">7 hari terakhir</option>
-                        <option value="30d">30 hari terakhir</option>
-                        <option value="90d">3 bulan terakhir</option>
-                        <option value="180d">6 bulan terakhir</option>
-                        <option value="365d">1 tahun terakhir</option>
-                      </select>
-                    </div>
-                  </div>
-                  <small class="text-muted d-block mt-2 mb-0">Sumbu X = pembeli · Sumbu Y = total kg dipesan (jumlah semua pemesanan per pembeli pada periode). Membantu melihat pembeli dengan volume pesanan terbesar.</small>
-                </div>
-                <div
-                  id="dashboardPemesananBuyerChartContainer"
-                  class="card-body"
-                  style="height: 350px; position: relative"
-                >
-                  <canvas id="pemesananBuyerChart"></canvas>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Recent Activity and Summary -->
@@ -526,7 +303,7 @@
 
     <!-- Script untuk sidebar toggle -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/dashboard_stats.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cafe_dashboard_home.js') }}"></script>
     <!-- Notification System - Load setelah api-service.js -->
     <script src="{{ url_for('static', filename='js/notification-system.js') }}"></script>
 

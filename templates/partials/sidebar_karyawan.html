@@ -1,0 +1,23 @@
+<nav class="sidebar close">
+  <header>
+    <div class="image-text">
+      <a href="{{ url_for('dashboard_karyawan') }}" class="d-flex align-items-center text-decoration-none" style="color:inherit">
+        <span class="image"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo" /></span>
+        <div class="text header-text">
+          <span class="name">Damarkandang</span>
+          <span class="text profession">Karyawan</span>
+        </div>
+      </a>
+    </div>
+    <i class="bx bx-chevron-right toggle"></i>
+  </header>
+  <div class="menu-bar">
+    <ul class="menu-links">
+      <li><a href="{{ url_for('dashboard_karyawan') }}" class="{% if active_menu=='dashboard' %}active{% endif %}"><i class="bi bi-speedometer2"></i><span class="text">Dashboard</span></a></li>
+      <li><a href="{{ url_for('kelola_pemesanan') }}" class="{% if active_menu=='kasir' %}active{% endif %}"><i class="bi bi-cart-check"></i><span class="text">Penjualan</span></a></li>
+      <li><a href="{{ url_for('kelola_bahan_karyawan') }}" class="{% if active_menu=='bahan' %}active{% endif %}"><i class="bi bi-cup-hot"></i><span class="text">Kelola Bahan</span></a></li>
+      <li><a href="{{ url_for('kelola_stok') }}" class="{% if active_menu=='stok' %}active{% endif %}"><i class="bi bi-boxes"></i><span class="text">Kelola Stok</span></a></li>
+      <li><a href="{{ url_for('profile_karyawan') }}" class="{% if active_menu=='profil' %}active{% endif %}"><i class="bi bi-person-circle"></i><span class="text">Profil</span></a></li>
+    </ul>
+  </div>
+</nav>

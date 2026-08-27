@@ -1,0 +1,74 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Dashboard Penjualan — Damarkandang{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+  <div>
+    <h1>Dashboard Penjualan</h1>
+    <p class="text-muted mb-0">Riwayat keluar produk, petugas penginput, pemasukan, dan pengurangan stok bahan</p>
+  </div>
+  <a href="{{ url_for('kelola_pemesanan_tambah') }}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-1"></i> Tambah Penjualan
+  </a>
+</div>
+
+<div class="row g-3 mb-4" id="statCards"></div>
+
+<div class="card cafe-card mb-3">
+  <div class="card-body">
+    <div class="row g-2 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label small">Cari ID / Petugas / Produk</label>
+        <input type="search" id="filterSearch" class="form-control" placeholder="PM-... / petugas / produk" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label small">Bulan</label>
+        <input type="month" id="filterBulan" class="form-control" />
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" id="btnFilter"><i class="bi bi-funnel"></i> Filter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card cafe-card">
+  <div class="card-body table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>ID Penjualan</th>
+          <th>Petugas</th>
+          <th>Tanggal</th>
+          <th>Produk / Kloter</th>
+          <th class="text-end">Total Pemasukan</th>
+          <th class="text-center">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <tr><td colspan="6" class="text-center text-muted py-4">Memuat data...</td></tr>
+      </tbody>
+    </table>
+    <div id="pagination" class="d-flex justify-content-end mt-3"></div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalStruk" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header py-2"><h6 class="modal-title">Nota Penjualan</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body struk-box" id="strukContent"></div>
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPrintStruk"><i class="bi bi-printer"></i> Cetak</button>
+        <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_css %}
+<style>.struk-box { font-family: monospace; font-size: 13px; } .struk-box img { max-width: 180px; }</style>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cafe_pemesanan_common.js') }}?v=20260815d"></script>
+<script src="{{ url_for('static', filename='js/cafe_pemesanan.js') }}?v=20260821a"></script>
+{% endblock %}

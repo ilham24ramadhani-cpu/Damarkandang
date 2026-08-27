@@ -8,7 +8,7 @@
   'use strict';
 
   // Storage key untuk notifikasi
-  const NOTIFICATION_STORAGE_KEY = 'argopuro_notifications';
+  const NOTIFICATION_STORAGE_KEY = 'damarkandang_notifications';
   const MAX_NOTIFICATIONS = 50; // Maksimal jumlah notifikasi yang disimpan
 
   /**

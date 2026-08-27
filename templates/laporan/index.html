@@ -1,0 +1,373 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Kelola Laporan — Damarkandang{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+  <div>
+    <h1>Kelola Laporan</h1>
+    <p class="text-muted mb-0">Rekap semua modul cafe sesuai data input: bahan, penjualan, pembelian, keuangan, dan stok</p>
+  </div>
+  <div class="d-flex gap-2 flex-wrap">
+    <a href="{{ url_for('kelola_pemesanan') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-cart-check"></i> Penjualan</a>
+    <a href="{{ url_for('cafe_pages.pembelian_page') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-bag-plus"></i> Pembelian</a>
+    <a href="{{ url_for('kelola_keuangan') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-currency-dollar"></i> Keuangan</a>
+    <a href="{{ url_for('kelola_stok') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-boxes"></i> Stok</a>
+  </div>
+</div>
+
+<ul class="nav nav-tabs mb-3 flex-wrap" id="laporanTabs">
+  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabBahanMasuk">Bahan Masuk</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPenjualan">Penjualan</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPembelian">Pembelian</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabKeuangan">Keuangan</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabStok">Stok</button></li>
+</ul>
+
+<div class="tab-content">
+  <!-- Bahan Masuk -->
+  <div class="tab-pane fade show active" id="tabBahanMasuk">
+    <div class="card cafe-card mb-3">
+      <div class="card-body">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-2">
+            <label class="form-label small" for="bmPeriode">Filter Waktu</label>
+            <select id="bmPeriode" class="form-select">
+              <option value="semua">Semua</option>
+              <option value="mingguan">Mingguan</option>
+              <option value="bulanan" selected>Bulanan</option>
+              <option value="tahunan">Tahunan</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Nilai Filter</label>
+            <input type="month" id="bmNilaiBulan" class="form-control bm-nilai" />
+            <input type="week" id="bmNilaiMinggu" class="form-control bm-nilai d-none" />
+            <input type="number" id="bmNilaiTahun" class="form-control bm-nilai d-none" min="2020" max="2100" placeholder="2026" />
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small" for="bmJenis">Jenis Bahan</label>
+            <select id="bmJenis" class="form-select"><option value="">Semua jenis bahan</option></select>
+          </div>
+          <div class="col-md-5 d-flex gap-2 flex-wrap align-items-end">
+            <button class="btn btn-primary" id="btnBmLoad"><i class="bi bi-search"></i> Tampilkan</button>
+            <button class="btn btn-outline-secondary" id="btnBmReset">Reset</button>
+            <div class="btn-group">
+              <button class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">Export</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" id="btnBmExportExcel">Excel (.csv)</a></li>
+                <li><a class="dropdown-item" href="#" id="btnBmExportPdf">PDF (semua ID bahan)</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row g-3 mb-3" id="bmSummaryCards"></div>
+    <div class="card cafe-card">
+      <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <span>Daftar Bahan Masuk</span>
+        <small class="text-muted" id="bmInfo"></small>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover table-sm align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>No</th>
+              <th>ID Bahan</th>
+              <th>Jenis Bahan</th>
+              <th>Jumlah (kg)</th>
+              <th>Harga/Kg (Rp)</th>
+              <th>Total Pengeluaran (Rp)</th>
+              <th>Tanggal Masuk</th>
+              <th>Transaksi</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="bmTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Penjualan -->
+  <div class="tab-pane fade" id="tabPenjualan">
+    <div class="row g-3 mb-4" id="pjSummary"></div>
+    <div class="card cafe-card mb-3">
+      <div class="card-body">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3 col-lg-2">
+            <label class="form-label small" for="pjProduk">Produk Terjual</label>
+            <select id="pjProduk" class="form-select"><option value="">Semua produk</option></select>
+          </div>
+          <div class="col-md-3 col-lg-2">
+            <label class="form-label small" for="pjPetugas">Petugas</label>
+            <select id="pjPetugas" class="form-select"><option value="">Semua petugas</option></select>
+          </div>
+          <div class="col-md-3 col-lg-2">
+            <label class="form-label small" for="pjBulan">Bulan</label>
+            <input type="month" id="pjBulan" class="form-control" />
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <label class="form-label small" for="pjDari">Tanggal dari</label>
+            <input type="date" id="pjDari" class="form-control" />
+          </div>
+          <div class="col-6 col-md-3 col-lg-2">
+            <label class="form-label small" for="pjSampai">Tanggal sampai</label>
+            <input type="date" id="pjSampai" class="form-control" />
+          </div>
+          <div class="col-12 d-flex gap-2 flex-wrap">
+            <button class="btn btn-primary" id="btnPjLoad"><i class="bi bi-search"></i> Tampilkan</button>
+            <button class="btn btn-outline-secondary" id="btnPjReset">Reset</button>
+            <button class="btn btn-outline-success" id="btnPjExcel"><i class="bi bi-file-earmark-spreadsheet"></i> Excel</button>
+            <button class="btn btn-outline-danger" id="btnPjPdf"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card cafe-card mb-3" id="pjRekapCard">
+      <div class="card-header d-flex justify-content-between"><span>Rekap Produk Terjual</span><small class="text-muted" id="pjRekapInfo"></small></div>
+      <div class="card-body table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead class="table-light"><tr><th>No</th><th>Produk</th><th class="text-end">Jumlah Terjual</th><th class="text-end">Total Pemasukan</th></tr></thead>
+          <tbody id="pjRekapBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-header">Daftar Penjualan</div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover table-sm mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID Penjualan</th><th>Petugas</th><th>Tanggal</th><th>Produk Terjual</th>
+              <th class="text-end">Jumlah</th><th class="text-end">Total Pemasukan</th><th>Catatan</th>
+            </tr>
+          </thead>
+          <tbody id="pjBody"></tbody>
+        </table>
+        <p class="text-muted small mt-2 mb-0" id="pjInfo"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pembelian -->
+  <div class="tab-pane fade" id="tabPembelian">
+    <div class="row g-3 mb-4" id="pbSummary"></div>
+    <div class="card cafe-card mb-3">
+      <div class="card-body">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label small" for="pbBahan">Bahan</label>
+            <select id="pbBahan" class="form-select"><option value="">Semua bahan</option></select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small" for="pbBulan">Bulan</label>
+            <input type="month" id="pbBulan" class="form-control" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label small" for="pbDari">Tanggal dari</label>
+            <input type="date" id="pbDari" class="form-control" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label small" for="pbSampai">Tanggal sampai</label>
+            <input type="date" id="pbSampai" class="form-control" />
+          </div>
+          <div class="col-12 d-flex gap-2 flex-wrap">
+            <button class="btn btn-primary" id="btnPbLoad"><i class="bi bi-search"></i> Tampilkan</button>
+            <button class="btn btn-outline-secondary" id="btnPbReset">Reset</button>
+            <button class="btn btn-outline-success" id="btnPbExcel"><i class="bi bi-file-earmark-spreadsheet"></i> Excel</button>
+            <button class="btn btn-outline-danger" id="btnPbPdf"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-header">Daftar Pembelian Bahan</div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover table-sm mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th><th>Tanggal</th><th>Bahan</th><th>Jumlah</th><th>Satuan</th>
+              <th class="text-end">Gram</th><th class="text-end">Harga/Kg</th><th class="text-end">Total</th><th>Catatan</th>
+            </tr>
+          </thead>
+          <tbody id="pbBody"></tbody>
+        </table>
+        <p class="text-muted small mt-2 mb-0" id="pbInfo"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keuangan -->
+  <div class="tab-pane fade" id="tabKeuangan">
+    <div class="row g-3 mb-4" id="keuSummary"></div>
+    <div class="card cafe-card mb-3">
+      <div class="card-body">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-2">
+            <label class="form-label small" for="keuArus">Arus</label>
+            <select id="keuArus" class="form-select">
+              <option value="semua">Semua</option>
+              <option value="pemasukan">Pemasukan</option>
+              <option value="pengeluaran">Pengeluaran</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small" for="keuJenis">Jenis</label>
+            <select id="keuJenis" class="form-select"><option value="">Semua jenis</option></select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small" for="keuSumber">Sumber</label>
+            <select id="keuSumber" class="form-select"><option value="">Semua sumber</option></select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small" for="keuBulan">Bulan</label>
+            <input type="month" id="keuBulan" class="form-control" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label small" for="keuDari">Tanggal dari</label>
+            <input type="date" id="keuDari" class="form-control" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label small" for="keuSampai">Tanggal sampai</label>
+            <input type="date" id="keuSampai" class="form-control" />
+          </div>
+          <div class="col-12 d-flex gap-2 flex-wrap">
+            <button class="btn btn-primary" id="btnKeuLoad"><i class="bi bi-search"></i> Tampilkan</button>
+            <button class="btn btn-outline-secondary" id="btnKeuReset">Reset</button>
+            <button class="btn btn-outline-success" id="btnKeuExcel"><i class="bi bi-file-earmark-spreadsheet"></i> Excel</button>
+            <button class="btn btn-outline-danger" id="btnKeuPdf"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card cafe-card mb-3">
+      <div class="card-header">Rekap per Jenis</div>
+      <div class="card-body table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead class="table-light"><tr><th>Arus</th><th>Jenis</th><th class="text-end">Jumlah Transaksi</th><th class="text-end">Nominal</th></tr></thead>
+          <tbody id="keuRekapBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-header">Daftar Transaksi Keuangan</div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover table-sm mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th><th>Tanggal</th><th>Arus</th><th>Jenis</th><th>Sumber</th>
+              <th class="text-end">Nominal</th><th>Referensi</th><th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="keuBody"></tbody>
+        </table>
+        <p class="text-muted small mt-2 mb-0" id="keuInfo"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stok -->
+  <div class="tab-pane fade" id="tabStok">
+    <div class="row g-3 mb-4" id="stSummary"></div>
+    <div class="card cafe-card mb-3">
+      <div class="card-header">Stok Saat Ini per Jenis Bahan</div>
+      <div class="card-body table-responsive">
+        <table class="table table-sm table-hover mb-0">
+          <thead class="table-light"><tr><th>Jenis Bahan</th><th class="text-end">Total Stok (gram)</th><th class="text-end">Stok (kg)</th><th>Status</th></tr></thead>
+          <tbody id="stSnapshotBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card cafe-card mb-3">
+      <div class="card-body">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-3">
+            <label class="form-label small" for="stBahan">Bahan</label>
+            <select id="stBahan" class="form-select"><option value="">Semua bahan</option></select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small" for="stTipe">Tipe Riwayat</label>
+            <select id="stTipe" class="form-select">
+              <option value="">Semua tipe</option>
+              <option value="MASUK">Masuk</option>
+              <option value="PEMBELIAN">Pembelian</option>
+              <option value="PEMAKAIAN">Pemakaian (penjualan)</option>
+              <option value="PENYESUAIAN">Penyesuaian</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small" for="stBulan">Bulan</label>
+            <input type="month" id="stBulan" class="form-control" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label small" for="stDari">Tanggal dari</label>
+            <input type="date" id="stDari" class="form-control" />
+          </div>
+          <div class="col-6 col-md-2">
+            <label class="form-label small" for="stSampai">Tanggal sampai</label>
+            <input type="date" id="stSampai" class="form-control" />
+          </div>
+          <div class="col-12 d-flex gap-2 flex-wrap">
+            <button class="btn btn-primary" id="btnStLoad"><i class="bi bi-search"></i> Tampilkan</button>
+            <button class="btn btn-outline-secondary" id="btnStReset">Reset</button>
+            <button class="btn btn-outline-success" id="btnStExcel"><i class="bi bi-file-earmark-spreadsheet"></i> Excel</button>
+            <button class="btn btn-outline-danger" id="btnStPdf"><i class="bi bi-file-earmark-pdf"></i> PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-header d-flex justify-content-between"><span>Riwayat Stok &amp; Penyesuaian</span><small class="text-muted" id="stInfo"></small></div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover table-sm mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th><th>Tanggal</th><th>Bahan</th><th>Tipe</th>
+              <th class="text-end">Jumlah (gram)</th><th class="text-end">Stok Sebelum</th>
+              <th class="text-end">Stok Sesudah</th><th>Referensi</th><th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="stBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalBmDetail" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="bmDetailTitle">Detail Laporan Bahan</h5>
+          <p class="text-muted small mb-0" id="bmDetailSubtitle"></p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-2 mb-3" id="bmDetailSummary"></div>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Tanggal</th><th>Tipe</th><th>Jumlah (kg)</th><th>Harga/Kg</th>
+                <th>Total Pengeluaran</th><th>Stok Sebelum</th><th>Stok Sesudah</th><th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody id="bmDetailBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-danger" id="btnBmDetailPdf"><i class="bi bi-file-pdf"></i> Export PDF</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="{{ url_for('static', filename='js/cafe_laporan.js') }}?v=20260821a"></script>
+{% endblock %}

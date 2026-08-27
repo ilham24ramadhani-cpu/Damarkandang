@@ -1,0 +1,585 @@
+{% extends 'cafe/base.html' %} {% block title %}Kelola Data — Damarkandang{%
+endblock %} {% block content %}
+<div class="page-header">
+  <h1>Kelola Data Master</h1>
+  <p class="text-muted">
+    Jenis bahan, produk & resep, pembayaran, dan jenis pemasukan/pengeluaran
+    keuangan
+  </p>
+</div>
+<ul class="nav nav-tabs mb-4" role="tablist">
+  <li class="nav-item">
+    <button
+      class="nav-link active"
+      data-bs-toggle="tab"
+      data-bs-target="#tabJenis"
+    >
+      Jenis Bahan
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabMenu">
+      Produk & Resep
+    </button>
+  </li>
+  <li class="nav-item">
+    <button
+      class="nav-link"
+      data-bs-toggle="tab"
+      data-bs-target="#tabPembayaran"
+    >
+      Data Pembayaran
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabJenisPg">
+      Jenis Pengeluaran
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabJenisPm">
+      Jenis Pemasukan
+    </button>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="tabJenis">
+    <div class="d-flex justify-content-between mb-3">
+      <span class="text-muted"
+        >Master jenis bahan — kategori: Minuman, Makanan, Kopral, Roasted,
+        Skincare</span
+      >
+      <button class="btn btn-primary btn-sm" id="btnAddJenis">
+        <i class="bi bi-plus-lg"></i> Tambah
+      </button>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama</th>
+              <th>Kategori</th>
+              <th>Bentuk / Satuan</th>
+              <th>Info Harga</th>
+              <th>Deskripsi</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="jenisBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="tabMenu">
+    <div class="d-flex justify-content-between mb-3">
+      <span class="text-muted"
+        >Produk jualan beserta resep bahan — kategori: Minuman, Makanan,
+        Kopral, Roasted, Skincare</span
+      >
+      <button class="btn btn-primary btn-sm" id="btnAddMenu">
+        <i class="bi bi-plus-lg"></i> Tambah Produk
+      </button>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Produk</th>
+              <th>Kategori</th>
+              <th>Modal</th>
+              <th>Keuntungan</th>
+              <th>Harga Jual</th>
+              <th>Resep</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="menuBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="tabPembayaran">
+    <div class="d-flex justify-content-between mb-3">
+      <span class="text-muted"
+        >Master metode pembayaran (Cash, QRIS, Debit) — gambar & rekening
+        opsional</span
+      >
+      <button class="btn btn-primary btn-sm" id="btnAddPembayaran">
+        <i class="bi bi-plus-lg"></i> Tambah
+      </button>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Metode</th>
+              <th>Label</th>
+              <th>Rekening</th>
+              <th>Gambar</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="pembayaranBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="tabJenisPg">
+    <div class="d-flex justify-content-between mb-3">
+      <span class="text-muted"
+        >Master jenis pengeluaran — <strong>Bahan Baku</strong> otomatis dari
+        pembelian</span
+      >
+      <button class="btn btn-primary btn-sm" id="btnAddJenisPg">
+        <i class="bi bi-plus-lg"></i> Tambah
+      </button>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Jenis</th>
+              <th>Tipe</th>
+              <th>Deskripsi</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="jenisPgBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="tabJenisPm">
+    <div class="d-flex justify-content-between mb-3">
+      <span class="text-muted"
+        >Master jenis pemasukan — <strong>Penjualan</strong> otomatis dari
+        penjualan lunas (pengurangan stok)</span
+      >
+      <button class="btn btn-primary btn-sm" id="btnAddJenisPm">
+        <i class="bi bi-plus-lg"></i> Tambah
+      </button>
+    </div>
+    <div class="card cafe-card">
+      <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Jenis</th>
+              <th>Tipe</th>
+              <th>Deskripsi</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="jenisPmBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalJenis" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formJenis">
+        <div class="modal-header">
+          <h5 class="modal-title">Jenis Bahan</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="jenisEditId" />
+          <div class="mb-3">
+            <label class="form-label">Nama Jenis *</label
+            ><input id="jenisNama" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Kategori *</label>
+            <select id="jenisKategori" class="form-select" required>
+              <option value="Minuman">Minuman (normal)</option>
+              <option value="Makanan">Makanan (normal)</option>
+              <option value="Kopral">Kopral (per pcs)</option>
+              <option value="Roasted">Roasted (per pcs)</option>
+              <option value="Skincare">Skincare (per pcs)</option>
+            </select>
+            <div class="form-text">
+              Kopral / Roasted / Skincare memakai konsep pcs (kemasan). Minuman
+              &amp; Makanan normal (kg/gram atau cairan).
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Bentuk Bahan *</label>
+            <select id="jenisBentuk" class="form-select">
+              <option value="non_cairan">Non Cairan</option>
+              <option value="cairan">Cairan</option>
+            </select>
+            <div class="form-text" id="hintJenisBentuk">
+              Harga ditetapkan di sini. Non cairan: pilih satuan Kg atau Pcs.
+              Cairan: input pack.
+            </div>
+          </div>
+          <div id="wrapJenisNonCairanFields">
+            <div class="mb-3">
+              <label class="form-label">Satuan Berat *</label>
+              <select id="jenisSatuanBerat" class="form-select">
+                <option value="kg">Kg</option>
+                <option value="pcs">Pcs (kemasan)</option>
+              </select>
+              <div class="form-text">
+                Kg: bahan curah Minuman/Makanan. Pcs otomatis untuk kategori
+                Kopral / Roasted / Skincare (250g / 500g / 1kg).
+              </div>
+            </div>
+            <div id="wrapJenisHargaKg">
+              <div class="mb-3">
+                <label class="form-label" id="labelJenisHarga">Harga per Kg (Rp) *</label>
+                <input
+                  id="jenisHargaPerKg"
+                  class="form-control"
+                  placeholder="Contoh: 12000"
+                />
+                <div class="form-text" id="hintJenisHarga">
+                  Digunakan otomatis saat input jumlah di Kelola Bahan.
+                </div>
+              </div>
+            </div>
+            <div id="wrapJenisHargaPcs" class="d-none">
+              <div class="mb-3">
+                <label class="form-label">Harga per Pcs (Rp) *</label>
+                <input
+                  id="jenisHargaPerPcs"
+                  class="form-control"
+                  placeholder="Contoh: 35000"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Isi per Pcs (gram) *</label>
+                <select id="jenisGramPerPcs" class="form-select">
+                  <option value="250">250 gram</option>
+                  <option value="500">500 gram</option>
+                  <option value="1000">1000 gram (1 kg)</option>
+                  <option value="custom">Lainnya...</option>
+                </select>
+                <input
+                  type="number"
+                  id="jenisGramPerPcsCustom"
+                  class="form-control mt-2 d-none"
+                  min="1"
+                  step="1"
+                  placeholder="Isi gram custom"
+                />
+                <div class="form-text">
+                  Stok tetap dicatat dalam gram; harga/kg dihitung otomatis dari
+                  harga pcs ÷ isi.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="wrapJenisCairanFields" class="d-none">
+            <div class="mb-3">
+              <label class="form-label">Harga per Pack (Rp) *</label>
+              <input
+                id="jenisHargaPerPack"
+                class="form-control"
+                placeholder="Contoh: 85000"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Berat per Pack (Kg) *</label>
+              <input
+                type="number"
+                id="jenisKgPerPack"
+                class="form-control"
+                min="0.001"
+                step="any"
+                placeholder="Contoh: 1"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Deskripsi</label
+            ><textarea
+              id="jenisDeskripsi"
+              class="form-control"
+              rows="2"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label
+            ><select id="jenisStatus" class="form-select">
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal</button
+          ><button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalMenu" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="formMenu">
+        <div class="modal-header">
+          <h5 class="modal-title">Produk & Resep</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="menuEditId" />
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Kategori Produk *</label>
+              <select id="menuKategori" class="form-select" required>
+                <option value="Minuman" selected>Minuman</option>
+                <option value="Makanan">Makanan</option>
+                <option value="Kopral">Kopral</option>
+                <option value="Roasted">Roasted</option>
+                <option value="Skincare">Skincare</option>
+              </select>
+              <div class="form-text" id="hintMenuKategori">
+                Kopral / Roasted / Skincare: nama dari dropdown kemasan bahan
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Nama Produk *</label>
+              <input id="menuNama" class="form-control" required />
+              <select id="menuNamaSelect" class="form-select d-none">
+                <option value="">Pilih kemasan dari Kelola Bahan...</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Status</label
+              ><select id="menuStatus" class="form-select">
+                <option value="aktif">Aktif</option>
+                <option value="nonaktif">Nonaktif</option>
+              </select>
+            </div>
+          </div>
+          <hr />
+          <h6>Resep Bahan (per porsi)</h6>
+          <p class="text-muted small mb-2" id="resepHint">
+            Satuan menyesuaikan jenis bahan: <strong>gram</strong> untuk bahan
+            Kg, <strong>pcs</strong> untuk Kopral/kemasan. Modal dihitung
+            otomatis.
+          </p>
+          <div class="row g-2 mb-1 small text-muted fw-semibold">
+            <div class="col-5">Bahan</div>
+            <div class="col-2">Jumlah</div>
+            <div class="col-4">Biaya Modal</div>
+            <div class="col-1"></div>
+          </div>
+          <div id="resepRows"></div>
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm mt-2"
+            id="btnAddResepRow"
+          >
+            <i class="bi bi-plus"></i> Tambah Bahan Resep
+          </button>
+          <hr />
+          <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+              <label class="form-label">Total Modal</label>
+              <input id="menuModal" class="form-control" readonly value="Rp0" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Harga Jual (Rp) *</label>
+              <input
+                type="number"
+                id="menuHarga"
+                class="form-control"
+                min="0"
+                step="1"
+                placeholder="0"
+                required
+              />
+              <div class="form-text">
+                Isi harga jual. Keuntungan dihitung otomatis dari modal.
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Keuntungan (otomatis)</label>
+              <input id="menuMargin" class="form-control" readonly value="0%" />
+              <div class="form-text">
+                Contoh modal Rp2.000, jual Rp2.600 → 30%
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal</button
+          ><button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalPembayaran" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formPembayaran">
+        <div class="modal-header">
+          <h5 class="modal-title">Data Pembayaran</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="pembayaranEditId" />
+          <div class="mb-3">
+            <label class="form-label">Metode *</label
+            ><select id="payMetode" class="form-select" required>
+              <option value="">Pilih...</option>
+              <option value="cash">Cash</option>
+              <option value="qris">QRIS</option>
+              <option value="debit">Debit</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Label Tampilan</label
+            ><input
+              id="payLabel"
+              class="form-control"
+              placeholder="Contoh: QRIS Damarkandang"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nomor Rekening (opsional)</label
+            ><input id="payRekening" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nama Rekening (opsional)</label
+            ><input id="payNamaRek" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Gambar QR / Logo (opsional)</label
+            ><input
+              type="file"
+              id="payGambarFile"
+              class="form-control"
+              accept="image/*"
+            />
+            <input type="hidden" id="payGambarUrl" />
+            <div id="payGambarPreview" class="mt-2"></div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Keterangan</label
+            ><textarea
+              id="payKeterangan"
+              class="form-control"
+              rows="2"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label
+            ><select id="payStatus" class="form-select">
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal</button
+          ><button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalJenisKeu" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formJenisKeu">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalJenisKeuTitle">Jenis Keuangan</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="jenisKeuEditId" /><input
+            type="hidden"
+            id="jenisKeuTipeData"
+          />
+          <div class="mb-3">
+            <label class="form-label">Nama Jenis *</label
+            ><input id="jenisKeuNama" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Deskripsi</label
+            ><textarea
+              id="jenisKeuDeskripsi"
+              class="form-control"
+              rows="2"
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label
+            ><select id="jenisKeuStatus" class="form-select">
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal</button
+          ><button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="{{ url_for('static', filename='js/cafe_kelola_data.js') }}?v=20260824a"></script>
+{% endblock %}

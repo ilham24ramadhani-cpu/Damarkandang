@@ -1,0 +1,36 @@
+.cafe-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+}
+.cafe-card .card-header {
+  background: #fff;
+  border-bottom: 1px solid #eef2f7;
+  font-weight: 600;
+}
+.stat-card {
+  border-left: 4px solid var(--bs-primary);
+}
+.stat-card.warning { border-left-color: #f59e0b; }
+.stat-card.danger { border-left-color: #ef4444; }
+.stat-card.success { border-left-color: #10b981; }
+.menu-links a.active {
+  background: rgba(13, 110, 253, 0.12);
+  border-radius: 8px;
+}
+.menu-divider {
+  margin: 0.75rem 0;
+  list-style: none;
+}
+.stok-badge-normal { background: #d1fae5; color: #065f46; }
+.stok-badge-menipis { background: #fef3c7; color: #92400e; }
+.stok-badge-habis { background: #fee2e2; color: #991b1b; }
+.page-header {
+  margin-bottom: 1.5rem;
+}
+.page-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+.toolbar-gap { gap: 0.5rem; }

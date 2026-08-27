@@ -1,0 +1,85 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Tambah Penjualan — Damarkandang{% endblock %}
+{% block extra_css %}
+<style>
+.struk-box { font-family: monospace; font-size: 13px; }
+.struk-box img { max-width: 180px; }
+.sale-table select, .sale-table input { min-width: 110px; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+  <div>
+    <h1>Tambah Penjualan</h1>
+    <p class="text-muted mb-0">Catat produk atau kloter yang terjual — pemasukan dan pengurangan stok dihitung otomatis.</p>
+  </div>
+  <a href="{{ url_for('kelola_pemesanan') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard
+  </a>
+</div>
+
+<div class="card cafe-card mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label for="tanggalPenjualan" class="form-label">Tanggal Penjualan *</label>
+        <input type="date" id="tanggalPenjualan" class="form-control" required />
+      </div>
+      <div class="col-md-4">
+        <label for="petugasPenjualan" class="form-label">Petugas Penginput *</label>
+        <select id="petugasPenjualan" class="form-select" required>
+          <option value="">Memuat petugas...</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="catatanPenjualan" class="form-label">Catatan</label>
+        <input type="text" id="catatanPenjualan" class="form-control" placeholder="Opsional" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card cafe-card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div><strong>Kloter Produk Terjual</strong><div class="small text-muted">Pilih produk, isi jumlah, lalu subtotal akan dihitung otomatis.</div></div>
+    <button type="button" class="btn btn-outline-primary btn-sm" id="btnTambahBaris"><i class="bi bi-plus-lg"></i> Tambah Produk</button>
+  </div>
+  <div class="card-body table-responsive">
+    <table class="table table-bordered align-middle sale-table mb-3">
+      <thead class="table-light">
+        <tr>
+          <th style="min-width: 240px">Produk / Kloter</th>
+          <th>Kategori</th>
+          <th style="min-width: 130px">Harga Jual (Rp)</th>
+          <th style="min-width: 110px">Jumlah Terjual</th>
+          <th style="min-width: 150px" class="text-end">Subtotal (Rp)</th>
+          <th class="text-center">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="barisPenjualan"></tbody>
+    </table>
+    <div class="d-flex justify-content-end align-items-center gap-3 border-top pt-3">
+      <span class="fw-semibold">Total Pemasukan</span>
+      <strong class="fs-4 text-success" id="totalPenjualan">Rp0</strong>
+      <button class="btn btn-success" id="btnBayar"><i class="bi bi-check2-circle me-1"></i> Simpan Penjualan</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalStruk" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header py-2"><h6 class="modal-title">Nota Penjualan</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body struk-box" id="strukContent"></div>
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPrintStruk"><i class="bi bi-printer"></i> Cetak</button>
+        <a href="{{ url_for('kelola_pemesanan') }}" class="btn btn-sm btn-primary">Ke Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/cafe_pemesanan_common.js') }}?v=20260815d"></script>
+<script src="{{ url_for('static', filename='js/cafe_kasir.js') }}?v=20260815d"></script>
+{% endblock %}

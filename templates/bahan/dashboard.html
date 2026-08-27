@@ -1,0 +1,12 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Dashboard Bahan — Damarkandang{% endblock %}
+{% block content %}
+<div class="page-header"><h1>Dashboard Kelola Bahan</h1></div>
+<div class="row g-3 mb-4" id="statCards"></div>
+<div class="row g-4">
+  <div class="col-lg-6"><div class="card cafe-card"><div class="card-header">Bahan Stok Menipis (&lt; 1.000 gram)</div><div class="card-body table-responsive"><table class="table table-sm"><thead><tr><th>Nama</th><th>Jenis</th><th>Stok</th><th>Status</th></tr></thead><tbody id="menipisBody"></tbody></table></div></div></div>
+  <div class="col-lg-6"><div class="card cafe-card"><div class="card-header">Pembelian Terbaru</div><div class="card-body table-responsive"><table class="table table-sm"><thead><tr><th>ID</th><th>Tanggal</th><th>Bahan</th><th>Total</th></tr></thead><tbody id="pembelianBody"></tbody></table></div></div></div>
+  <div class="col-12"><div class="card cafe-card"><div class="card-header">Pengeluaran Terbaru</div><div class="card-body table-responsive"><table class="table table-sm"><thead><tr><th>Tanggal</th><th>Kategori</th><th>Nominal</th><th>Keterangan</th></tr></thead><tbody id="pengeluaranBody"></tbody></table></div></div></div>
+</div>
+{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/cafe_dashboard.js') }}"></script>{% endblock %}

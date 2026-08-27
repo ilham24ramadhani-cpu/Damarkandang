@@ -1,0 +1,22 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Kelola Stok — Damarkandang{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+  <div>
+    <h1>Kelola Stok</h1>
+    <p class="text-muted mb-0">Ringkasan stok per jenis bahan — menipis jika &lt; 1.000 gram, habis jika 0 gram</p>
+  </div>
+  <span class="badge bg-light text-dark border" id="lastUpdate">Memuat...</span>
+</div>
+<div class="row g-3 mb-3" id="stokSummary"></div>
+<div class="card cafe-card"><div class="card-body">
+  <div class="row g-2 mb-3"><div class="col-md-4"><input type="search" id="searchInput" class="form-control" placeholder="Cari jenis bahan..." /></div></div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead><tr><th>Jenis Bahan</th><th>Total Stok (gram)</th><th>Status Stok</th></tr></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div></div>
+{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/cafe_stok.js') }}?v=20260821a"></script>{% endblock %}

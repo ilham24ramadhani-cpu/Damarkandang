@@ -1,0 +1,114 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Kelola Karyawan & Pengguna — Damarkandang{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+  <div>
+    <h1>Kelola Karyawan & Pengguna</h1>
+    <p class="text-muted mb-0">Atur data petugas penginput, akun, peran (aktor), dan status akses sistem.</p>
+  </div>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPengguna" onclick="openModal('add')">
+    <i class="bi bi-plus-circle me-2"></i>Tambah Karyawan / Pengguna
+  </button>
+</div>
+<div class="card cafe-card shadow-sm">
+  <div class="card-body table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>No</th>
+          <th>Nama Lengkap</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Peran / Aktor</th>
+          <th>Status</th>
+          <th class="text-center">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="modalPengguna" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPenggunaLabel">Tambah Pengguna</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formPengguna">
+          <input type="hidden" id="userId" />
+          <div class="mb-3">
+            <label for="namaLengkap" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="namaLengkap" required />
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="username" required />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" id="email" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password <span class="text-danger" id="passwordRequired">*</span></label>
+            <input type="password" class="form-control" id="password" />
+            <small class="text-muted" id="passwordHint">Kosongkan jika tidak ingin mengubah password</small>
+          </div>
+          <div class="mb-3">
+            <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+            <select class="form-select" id="role" required>
+              <option value="">Pilih Role</option>
+              <option value="Admin">Admin</option>
+              <option value="Owner">Owner</option>
+              <option value="Karyawan">Karyawan</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+            <select class="form-select" id="status" required>
+              <option value="">Pilih Status</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary" onclick="saveUser()">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalDelete" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Konfirmasi Hapus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Apakah Anda yakin ingin menghapus pengguna ini?</p>
+        <p class="fw-bold mb-0" id="deleteUserName"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/api-service.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth-guard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/kelola_pengguna.js') }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async function () {
+    await checkAuth('Admin');
+  });
+</script>
+{% endblock %}

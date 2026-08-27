@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pengaturan Karyawan - Argopuro Walida</title>
+    <title>Pengaturan Karyawan - Damarkandang</title>
     <!-- Boxicons -->
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -51,66 +51,8 @@
     <div class="sidebar-overlay"></div>
 
     <!-- ===== Sidebar Start ===== -->
-    <nav class="sidebar close">
-      <header>
-        <div class="image-text">
-          <a
-            href="{{ url_for('dashboard_karyawan') }}"
-            class="d-flex align-items-center text-decoration-none"
-            style="color: inherit"
-          >
-            <span class="image">
-              <img
-                src="{{ url_for('static', filename='img/logo.png') }}"
-                alt="logo"
-              />
-            </span>
-
-            <div class="text header-text">
-              <span class="name">Argopuro Walida</span>
-              <span class="text profession">Karyawan Dashboard</span>
-            </div>
-          </a>
-        </div>
-
-        <i class="bx bx-chevron-right toggle"></i>
-      </header>
-
-      <div class="menu-bar">
-        <ul class="menu-links">
-          <li>
-            <a href="{{ url_for('dashboard_karyawan') }}"
-              ><i class="bi bi-house-door"></i
-              ><span class="text">Dashboard</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_bahan_karyawan') }}">
-              <i class="bi bi-flower1"></i>
-              <span class="text">Input Bahan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_produksi_karyawan') }}"
-              ><i class="bi bi-building-gear"></i
-              ><span class="text">Input Produksi</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_sanitasi_karyawan') }}"
-              ><i class="bi bi-shield-check"></i
-              ><span class="text">Input Sanitasi</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('profile_karyawan') }}"
-              ><i class="bi bi-person-circle"></i
-              ><span class="text">Profil</span></a
-            >
-          </li>
-        </ul>
-      </div>
-    </nav>
+    {% set active_menu = 'profil' %}
+    {% include 'partials/sidebar_karyawan.html' %}
     <!-- ===== Sidebar End ===== -->
     <section class="home">
       <!-- Navbar -->
@@ -124,7 +66,7 @@
           </button>
 
           <!-- Brand -->
-          <span class="fw-bold fs-5">Argopuro Walida System <span class="badge bg-info ms-2">Karyawan</span></span>
+          <span class="fw-bold fs-5">Damarkandang System <span class="badge bg-info ms-2">Karyawan</span></span>
 
           <!-- Search Bar -->
           <form class="d-flex ms-auto me-3" role="search">

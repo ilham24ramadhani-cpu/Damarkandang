@@ -1,0 +1,42 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Kelola Keuangan — Damarkandang{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+  <div><h1>Kelola Keuangan</h1><p class="text-muted mb-0">Pengeluaran otomatis dari pencatatan bahan masuk & pembelian bahan — pemasukan otomatis dari penjualan lunas</p></div>
+  <div class="d-flex gap-2 flex-wrap">
+    <button class="btn btn-outline-primary" id="btnTambahPemasukan" data-bs-toggle="modal" data-bs-target="#modalPemasukan"><i class="bi bi-plus-lg"></i> Tambah Pemasukan</button>
+    <button class="btn btn-primary" id="btnTambahPengeluaran" data-bs-toggle="modal" data-bs-target="#modalPengeluaran"><i class="bi bi-plus-lg"></i> Tambah Pengeluaran</button>
+  </div>
+</div>
+<ul class="nav nav-tabs mb-3"><li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabPengeluaran">Pengeluaran</button></li>
+<li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPemasukan">Pemasukan</button></li></ul>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="tabPengeluaran"><div class="card cafe-card"><div class="card-body table-responsive">
+    <table class="table table-hover"><thead><tr><th>Tanggal</th><th>Jenis</th><th>Sumber</th><th>Nominal</th><th>Keterangan</th></tr></thead><tbody id="pengeluaranBody"></tbody></table>
+  </div></div></div>
+  <div class="tab-pane fade" id="tabPemasukan"><div class="card cafe-card"><div class="card-body table-responsive">
+    <table class="table table-hover"><thead><tr><th>Tanggal</th><th>Jenis</th><th>Sumber</th><th>Referensi</th><th>Nominal</th><th>Keterangan</th></tr></thead><tbody id="pemasukanBody"></tbody></table>
+  </div></div></div>
+</div>
+
+<div class="modal fade" id="modalPengeluaran" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+  <form id="formPengeluaran" novalidate><div class="modal-header"><h5 class="modal-title">Tambah Pengeluaran Manual</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <div class="mb-3"><label class="form-label">Tanggal</label><input type="date" id="pgTanggal" class="form-control" required /></div>
+    <div class="mb-3"><label class="form-label">Jenis Pengeluaran</label><select id="pgJenis" class="form-select" required></select></div>
+    <div class="mb-3"><label class="form-label">Nominal</label><input id="pgNominal" class="form-control" required /></div>
+    <div class="mb-3"><label class="form-label">Keterangan</label><textarea id="pgKeterangan" class="form-control" rows="2"></textarea></div>
+  </div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-primary">Simpan</button></div></form>
+</div></div></div>
+
+<div class="modal fade" id="modalPemasukan" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+  <form id="formPemasukan" novalidate><div class="modal-header"><h5 class="modal-title">Tambah Pemasukan Manual</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <div class="mb-3"><label class="form-label">Tanggal</label><input type="date" id="pmTanggal" class="form-control" required /></div>
+    <div class="mb-3"><label class="form-label">Jenis Pemasukan</label><select id="pmJenis" class="form-select" required></select></div>
+    <div class="mb-3"><label class="form-label">Nominal</label><input id="pmNominal" class="form-control" required /></div>
+    <div class="mb-3"><label class="form-label">Keterangan</label><textarea id="pmKeterangan" class="form-control" rows="2"></textarea></div>
+  </div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-primary">Simpan</button></div></form>
+</div></div></div>
+{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/cafe_keuangan_unified.js') }}"></script>{% endblock %}

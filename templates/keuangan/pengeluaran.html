@@ -1,0 +1,23 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Pengeluaran — Damarkandang{% endblock %}
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+  <div><h1>Pengeluaran Keuangan</h1></div>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalForm"><i class="bi bi-plus-lg"></i> Tambah Pengeluaran</button>
+</div>
+<div class="card cafe-card"><div class="card-body">
+  <div class="row g-2 mb-3"><div class="col-md-4"><input type="search" id="searchInput" class="form-control" placeholder="Cari..." /></div></div>
+  <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>ID</th><th>Tanggal</th><th>Kategori</th><th>Sumber</th><th>Nominal</th><th>Keterangan</th></tr></thead><tbody id="tableBody"></tbody></table></div>
+  <div id="pagination" class="d-flex justify-content-end"></div>
+</div></div>
+<div class="modal fade" id="modalForm" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+  <form id="formData"><div class="modal-header"><h5 class="modal-title">Tambah Pengeluaran Manual</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <div class="mb-3"><label class="form-label">Tanggal</label><input type="date" id="tanggal" class="form-control" required /></div>
+    <div class="mb-3"><label class="form-label">Kategori</label><select id="kategori" class="form-select">{% for k in kategori_list %}<option value="{{ k }}">{{ k }}</option>{% endfor %}</select></div>
+    <div class="mb-3"><label class="form-label">Nominal</label><input type="text" id="nominal" class="form-control" required /></div>
+    <div class="mb-3"><label class="form-label">Keterangan</label><textarea id="keterangan" class="form-control" rows="2"></textarea></div>
+  </div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-primary">Simpan</button></div></form>
+</div></div></div>
+{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/cafe_pengeluaran.js') }}"></script>{% endblock %}

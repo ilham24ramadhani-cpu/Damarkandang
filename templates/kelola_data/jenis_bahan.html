@@ -1,0 +1,221 @@
+{% extends 'cafe/base.html' %} {% block title %}Jenis Bahan — Damarkandang{%
+endblock %} {% block content %}
+<div
+  class="page-header d-flex justify-content-between align-items-center flex-wrap gap-2"
+>
+  <div>
+    <h1>Jenis Bahan</h1>
+    <p class="text-muted mb-0">Master jenis bahan baku cafe</p>
+  </div>
+  <button
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#modalForm"
+  >
+    <i class="bi bi-plus-lg"></i> Tambah
+  </button>
+</div>
+<div class="card cafe-card">
+  <div class="card-body">
+    <div class="row g-2 mb-3">
+      <div class="col-md-4">
+        <input
+          type="search"
+          id="searchInput"
+          class="form-control"
+          placeholder="Cari jenis bahan..."
+        />
+      </div>
+      <div class="col-md-3">
+        <select id="statusFilter" class="form-select">
+          <option value="">Semua Status</option>
+          <option value="aktif">Aktif</option>
+          <option value="nonaktif">Nonaktif</option>
+        </select>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+              <th>ID</th>
+              <th>Nama</th>
+              <th>Kategori</th>
+              <th>Bentuk</th>
+              <th>Info Harga</th>
+              <th>Deskripsi</th>
+              <th>Status</th>
+              <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div id="pagination" class="d-flex justify-content-end"></div>
+  </div>
+</div>
+<div class="modal fade" id="modalForm" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Tambah Jenis Bahan</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <form id="formData">
+        <div class="modal-body">
+          <input type="hidden" id="editId" />
+          <div class="mb-3">
+            <label class="form-label">Nama Jenis *</label
+            ><input type="text" id="namaJenis" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Kategori *</label>
+            <select id="kategoriJenis" class="form-select" required>
+              <option value="Minuman">Minuman (normal)</option>
+              <option value="Makanan">Makanan (normal)</option>
+              <option value="Kopral">Kopral (per pcs)</option>
+              <option value="Roasted">Roasted (per pcs)</option>
+              <option value="Skincare">Skincare (per pcs)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Bentuk Bahan *</label>
+            <select id="bentukBahan" class="form-select">
+              <option value="non_cairan">Non Cairan</option>
+              <option value="cairan">Cairan</option>
+            </select>
+            <div class="form-text">
+              Harga ditetapkan di sini. Non cairan: pilih satuan Kg atau Pcs.
+              Cairan: input pack.
+            </div>
+          </div>
+          <div id="wrapNonCairanFields">
+            <div class="mb-3">
+              <label class="form-label">Satuan Berat *</label>
+              <select id="satuanBerat" class="form-select">
+                <option value="kg">Kg</option>
+                <option value="pcs">Pcs (kemasan)</option>
+              </select>
+              <div class="form-text">
+                Kg: roasted beans &amp; bahan curah. Pcs: Kopral per kemasan
+                (250g / 500g / 1kg).
+              </div>
+            </div>
+            <div id="wrapHargaKg">
+              <div class="mb-3">
+                <label class="form-label">Harga per Kg (Rp) *</label>
+                <input
+                  type="text"
+                  id="hargaPerKgMaster"
+                  class="form-control"
+                  placeholder="Contoh: 12000"
+                />
+              </div>
+            </div>
+            <div id="wrapHargaPcs" class="d-none">
+              <div class="mb-3">
+                <label class="form-label">Harga per Pcs (Rp) *</label>
+                <input
+                  type="text"
+                  id="hargaPerPcs"
+                  class="form-control"
+                  placeholder="Contoh: 35000"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Isi per Pcs (gram) *</label>
+                <select id="gramPerPcs" class="form-select">
+                  <option value="250">250 gram</option>
+                  <option value="500">500 gram</option>
+                  <option value="1000">1000 gram (1 kg)</option>
+                  <option value="custom">Lainnya...</option>
+                </select>
+                <input
+                  type="number"
+                  id="gramPerPcsCustom"
+                  class="form-control mt-2 d-none"
+                  min="1"
+                  step="1"
+                  placeholder="Isi gram custom"
+                />
+              </div>
+            </div>
+          </div>
+          <div id="wrapCairanFields" class="d-none">
+            <div class="mb-3">
+              <label class="form-label">Harga per Pack (Rp) *</label>
+              <input
+                type="text"
+                id="hargaPerPack"
+                class="form-control"
+                placeholder="Contoh: 85000"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Berat per Pack (Kg) *</label>
+              <input
+                type="number"
+                id="kgPerPack"
+                class="form-control"
+                min="0.001"
+                step="any"
+                placeholder="Contoh: 1"
+              />
+              <div class="form-text">
+                Digunakan otomatis saat input jumlah pack di Kelola Bahan.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Deskripsi</label
+            ><textarea id="deskripsi" class="form-control" rows="2"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label
+            ><select id="status" class="form-select">
+              <option value="aktif">Aktif</option>
+              <option value="nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Batal</button
+          ><button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalDelete" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Konfirmasi Hapus</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Yakin ingin menghapus/menonaktifkan jenis bahan ini?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button
+        ><button class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="{{ url_for('static', filename='js/cafe_jenis_bahan.js') }}?v=20260821d"></script>
+{% endblock %}

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pengaturan - Argopuro Walida</title>
+    <title>Pengaturan - Damarkandang</title>
     <!-- Boxicons -->
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -51,95 +51,8 @@
     <div class="sidebar-overlay"></div>
 
     <!-- ===== Sidebar Start ===== -->
-    <nav class="sidebar close">
-      <header>
-        <div class="image-text">
-          <a
-            href="{{ url_for('dashboard') }}"
-            class="d-flex align-items-center text-decoration-none"
-            style="color: inherit"
-          >
-            <span class="image">
-              <img
-                src="{{ url_for('static', filename='img/logo.png') }}"
-                alt="logo"
-              />
-            </span>
-
-            <div class="text header-text">
-              <span class="name">Argopuro Walida</span>
-            </div>
-          </a>
-        </div>
-
-        <i class="bx bx-chevron-right toggle"></i>
-      </header>
-
-      <div class="menu-bar">
-        <ul class="menu-links">
-          <li>
-            <a href="{{ url_for('kelola_pengguna') }}"
-              ><i class="bi bi-person-circle"></i
-              ><span class="text">Kelola Pengguna</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_bahan') }}">
-              <i class="bi bi-flower1"></i>
-              <span class="text">Kelola Bahan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_produksi') }}"
-              ><i class="bi bi-building-gear"></i
-              ><span class="text">Kelola Produksi</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_stok') }}"
-              ><i class="bi bi-boxes"></i
-              ><span class="text">Kelola Stok</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_pemasok') }}"
-              ><i class="bi bi-person-heart"></i
-              ><span class="text">Kelola Pemasok</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_sanitasi') }}"
-              ><i class="bi bi-shield-check"></i
-              ><span class="text">Kelola Sanitasi</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_keuangan') }}"
-              ><i class="bi bi-currency-dollar"></i
-              ><span class="text">Kelola Keuangan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_laporan') }}"
-              ><i class="bi bi-file-text"></i
-              ><span class="text">Kelola Laporan</span></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('kelola_data') }}"
-              ><i class="bi bi-database"></i
-              ><span class="text">Kelola Data</span></a
-            >
-          </li>
-          <li>
-            <a href="#"
-              ><i class="bi bi-cart"></i
-              ><span class="text">Kelola Pemesanan</span></a
-            >
-          </li>
-        </ul>
-      </div>
-    </nav>
+    {% set active_menu = 'dashboard' %}
+    {% include 'partials/sidebar_damarkandang.html' %}
     <!-- ===== Sidebar End ===== -->
     <section class="home">
       <!-- Navbar -->
@@ -153,7 +66,7 @@
           </button>
 
           <!-- Brand -->
-          <span class="fw-bold fs-5">Argopuro Walida System <span class="badge bg-primary ms-2">Admin</span></span>
+          <span class="fw-bold fs-5">Damarkandang System <span class="badge bg-primary ms-2">Admin</span></span>
 
           <!-- Search Bar -->
           <form class="d-flex ms-auto me-3" role="search">

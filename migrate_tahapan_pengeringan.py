@@ -8,10 +8,14 @@ Script Migrasi: Update Master Data Tahapan Produksi
 
 from pymongo import MongoClient
 from datetime import datetime
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 
-# Konfigurasi MongoDB (sesuaikan dengan konfigurasi Anda)
-MONGO_URI = "mongodb://localhost:27017/"
-DB_NAME = "argopuro_walida"  # Sesuaikan dengan nama database Anda
+load_dotenv(join(dirname(__file__), ".env"))
+
+MONGO_URI = os.environ.get("MONGODB_URI", "mongodb://localhost:27017/")
+DB_NAME = os.environ.get("DB_NAME", "DB_SEMHAS")
 
 # Referensi urutan (dokumentasi; sinkron dengan app.validate_sequential_tahapan)
 URUTAN_TAHAPAN = {
