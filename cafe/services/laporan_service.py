@@ -2,9 +2,9 @@
 
 from datetime import datetime, timedelta
 
-from app.database import get_db
-from app.utils.dates import bulan_bounds
-from app.utils.unit_converter import total_harga_dari_gram
+from cafe.database import get_db
+from cafe.utils.dates import bulan_bounds
+from cafe.utils.unit_converter import total_harga_dari_gram
 
 
 def _date_filter(bulan, tanggal_dari, tanggal_sampai):
@@ -324,7 +324,7 @@ def _penjualan_query(bulan=None, tanggal_dari=None, tanggal_sampai=None, id_menu
 
 def get_opsi_filter_penjualan():
     """Dropdown produk & petugas untuk laporan penjualan."""
-    from app.services import kasir_service
+    from cafe.services import kasir_service
 
     db = get_db()
     petugas = kasir_service.list_petugas()
@@ -363,12 +363,12 @@ def get_opsi_filter_penjualan():
 
 def get_opsi_filter_laporan():
     """Semua opsi filter laporan — di-cache singkat agar tab laporan tidak berat."""
-    from app.utils.cache import cached
+    from cafe.utils.cache import cached
     return cached('laporan:opsi', 45, _get_opsi_filter_laporan_uncached)
 
 
 def _get_opsi_filter_laporan_uncached():
-    from app.services import jenis_keuangan_service
+    from cafe.services import jenis_keuangan_service
 
     db = get_db()
     opsi = get_opsi_filter_penjualan()
@@ -470,7 +470,7 @@ def ringkasan_keuangan(bulan=None, tanggal_dari=None, tanggal_sampai=None, jenis
 
 
 def ringkasan_stok_saat_ini():
-    from app.services import bahan_service
+    from cafe.services import bahan_service
 
     rows = bahan_service.list_stok_by_jenis()
     normal = sum(1 for r in rows if r.get('stok_status') not in ('menipis', 'habis'))

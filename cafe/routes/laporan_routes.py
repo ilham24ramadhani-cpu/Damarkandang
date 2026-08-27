@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from app.services import laporan_service
-from app.utils.response import error_response, success_response
+from cafe.services import laporan_service
+from cafe.utils.response import error_response, success_response
 
 laporan_bp = Blueprint('laporan_api', __name__)
 

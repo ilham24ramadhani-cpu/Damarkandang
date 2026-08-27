@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from app.config import KATEGORI_BAHAN
-from app.services import jenis_bahan_service
-from app.utils.response import error_response, success_response
+from cafe.config import KATEGORI_BAHAN
+from cafe.services import jenis_bahan_service
+from cafe.utils.response import error_response, success_response
 
 jenis_bahan_bp = Blueprint('jenis_bahan_api', __name__)
 

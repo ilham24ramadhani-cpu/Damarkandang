@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request
-from app.config import CAFE_NAME, PENGELUARAN_KATEGORI
-from app.services import dashboard_service
-from app.utils.response import error_response, success_response
+from cafe.config import CAFE_NAME, PENGELUARAN_KATEGORI
+from cafe.services import dashboard_service
+from cafe.utils.response import error_response, success_response
 
 pages_bp = Blueprint('cafe_pages', __name__)
 

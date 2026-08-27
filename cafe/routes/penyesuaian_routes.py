@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from app.services import pembelian_service, stok_service
-from app.utils.response import error_response, success_response, now_iso
+from cafe.services import pembelian_service, stok_service
+from cafe.utils.response import error_response, success_response, now_iso
 
 stok_bp = Blueprint('stok_api', __name__)
 
@@ -8,7 +8,7 @@ stok_bp = Blueprint('stok_api', __name__)
 @stok_bp.route('/api/stok/jenis-bahan', methods=['GET'])
 def list_stok_jenis_bahan():
     try:
-        from app.services import bahan_service
+        from cafe.services import bahan_service
         search = (request.args.get('search') or '').strip()
         items = bahan_service.list_stok_by_jenis(search)
         return success_response('OK', {'items': items, 'total': len(items), 'updated_at': now_iso()})

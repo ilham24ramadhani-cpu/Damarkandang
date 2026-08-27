@@ -1,8 +1,8 @@
 """Master jenis pemasukan & pengeluaran keuangan cafe."""
 
-from app.database import get_db
-from app.utils.id_generator import generate_id_jenis_pemasukan, generate_id_jenis_pengeluaran
-from app.utils.response import now_iso
+from cafe.database import get_db
+from cafe.utils.id_generator import generate_id_jenis_pemasukan, generate_id_jenis_pengeluaran
+from cafe.utils.response import now_iso
 
 DEFAULT_JENIS_PENGELUARAN = [
     {'nama_jenis': 'Bahan Baku', 'tipe': 'otomatis', 'deskripsi': 'Otomatis dari pencatatan bahan masuk & pembelian bahan'},

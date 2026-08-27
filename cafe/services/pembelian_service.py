@@ -1,9 +1,9 @@
 from datetime import datetime
-from app.database import get_db
-from app.services import bahan_service, keuangan_service, stok_service
-from app.utils.id_generator import generate_id_pembelian
-from app.utils.unit_converter import normalize_satuan, to_gram, total_harga_dari_gram
-from app.utils.response import now_iso
+from cafe.database import get_db
+from cafe.services import bahan_service, keuangan_service, stok_service
+from cafe.utils.id_generator import generate_id_pembelian
+from cafe.utils.unit_converter import normalize_satuan, to_gram, total_harga_dari_gram
+from cafe.utils.response import now_iso
 
 
 def list_pembelian(search='', page=1, per_page=10):
@@ -130,7 +130,7 @@ def create_pembelian(data):
 
 
 def total_pembelian_bulan(bulan_yyyy_mm=None):
-    from app.utils.dates import bulan_query
+    from cafe.utils.dates import bulan_query
     bulan = bulan_yyyy_mm or datetime.now().strftime('%Y-%m')
     db = get_db()
     pipeline = [

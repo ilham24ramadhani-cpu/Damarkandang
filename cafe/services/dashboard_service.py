@@ -1,8 +1,8 @@
 from datetime import datetime
-from app.database import get_db
-from app.services import bahan_service, keuangan_service, pemasukan_service, pembelian_service, kasir_service
-from app.utils.cache import cached
-from app.utils.dates import bulan_query
+from cafe.database import get_db
+from cafe.services import bahan_service, keuangan_service, pemasukan_service, pembelian_service, kasir_service
+from cafe.utils.cache import cached
+from cafe.utils.dates import bulan_query
 
 
 def get_dashboard_stats():

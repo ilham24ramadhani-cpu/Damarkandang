@@ -30,8 +30,8 @@ def is_test_name(name):
 client = MongoClient(MONGODB_URI)
 db = client[DB_NAME]
 
-from app.database import init_db
-from app.services.bahan_service import delete_bahan
+from cafe.database import init_db
+from cafe.services.bahan_service import delete_bahan
 
 init_db(db, client)
 

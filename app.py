@@ -1154,7 +1154,7 @@ def dashboard_owner():
 @app.route('/kelola/pengguna')
 def kelola_pengguna():
     """User management page"""
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template('pengguna/index.html', cafe_name=CAFE_NAME, active_menu='pengguna')
 
 @app.route('/kelola/bahan')
@@ -1193,12 +1193,12 @@ def kelola_pemasok():
 @app.route('/kelola/stok')
 def kelola_stok():
     """Stok bahan baku cafe"""
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template('stok/index.html', cafe_name=CAFE_NAME, active_menu='stok')
 
 @app.route('/kelola/keuangan')
 def kelola_keuangan():
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template(
         'keuangan/unified.html',
         cafe_name=CAFE_NAME,
@@ -1207,7 +1207,7 @@ def kelola_keuangan():
 
 @app.route('/kelola/data')
 def kelola_data():
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template('kelola_data/cafe_master.html', cafe_name=CAFE_NAME, active_menu='kelola-data')
 
 @app.route('/kelola/sanitasi')
@@ -1221,23 +1221,23 @@ def kelola_sanitasi_karyawan():
 @app.route('/kelola/laporan')
 def kelola_laporan():
     """Rekapan & laporan cafe Damarkandang"""
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template('laporan/index.html', cafe_name=CAFE_NAME, active_menu='laporan')
 
 @app.route('/kelola/laporan/owner')
 def kelola_laporan_owner():
     """Laporan cafe untuk Owner"""
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template('laporan/index.html', cafe_name=CAFE_NAME, active_menu='laporan')
 
 @app.route('/kelola/pemesanan')
 def kelola_pemesanan():
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template('kasir/dashboard.html', cafe_name=CAFE_NAME, active_menu='kasir')
 
 @app.route('/kelola/pemesanan/tambah')
 def kelola_pemesanan_tambah():
-    from app.config import CAFE_NAME
+    from cafe.config import CAFE_NAME
     return render_template('kasir/tambah.html', cafe_name=CAFE_NAME, active_menu='kasir')
 
 @app.route('/profile')
@@ -6283,7 +6283,7 @@ def get_stok_for_pemesanan():
 import os
 
 # Modul Kelola Bahan & Keuangan — Cafe Damarkandang
-from app import init_cafe_module
+from cafe import init_cafe_module
 init_cafe_module(app, db, client)
 
 if __name__ == "__main__":

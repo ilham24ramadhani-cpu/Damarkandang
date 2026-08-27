@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from app.services import pembelian_service
-from app.utils.response import error_response, success_response
+from cafe.services import pembelian_service
+from cafe.utils.response import error_response, success_response
 
 pembelian_bp = Blueprint('pembelian_api', __name__)
 

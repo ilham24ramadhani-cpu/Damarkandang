@@ -1,4 +1,4 @@
-from app.config import GRAM_PER_KG, SATUAN_PEMBELIAN
+from cafe.config import GRAM_PER_KG, SATUAN_PEMBELIAN
 
 
 def normalize_satuan(satuan):

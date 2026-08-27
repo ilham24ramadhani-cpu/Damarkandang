@@ -1,7 +1,7 @@
-from app.config import KATEGORI_BAHAN, KATEGORI_PCS
-from app.database import get_db
-from app.utils.id_generator import generate_id_jenis_bahan
-from app.utils.response import now_iso
+from cafe.config import KATEGORI_BAHAN, KATEGORI_PCS
+from cafe.database import get_db
+from cafe.utils.id_generator import generate_id_jenis_bahan
+from cafe.utils.response import now_iso
 
 BENTUK_NON_CAIRAN = 'non_cairan'
 BENTUK_CAIRAN = 'cairan'
@@ -338,11 +338,11 @@ def update_jenis_bahan(id_jenis, data):
     db.jenis_bahan.update_one({'id_jenis': id_jenis}, ops)
 
     if 'nama_jenis' in update or 'kategori' in update:
-        from app.services.bahan_service import sync_nama_from_jenis_master
+        from cafe.services.bahan_service import sync_nama_from_jenis_master
         nama = update.get('nama_jenis') or doc.get('nama_jenis')
         sync_nama_from_jenis_master(id_jenis, nama, kategori=update.get('kategori') or kategori)
     if harga_changed and 'harga_per_kg' in update:
-        from app.services.bahan_service import sync_harga_from_jenis_master
+        from cafe.services.bahan_service import sync_harga_from_jenis_master
         sync_payload = dict(update)
         sync_payload['kategori'] = kategori
         sync_harga_from_jenis_master(id_jenis, sync_payload)

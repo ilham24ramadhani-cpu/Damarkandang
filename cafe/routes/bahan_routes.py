@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from app.services import bahan_service
-from app.utils.id_generator import preview_id_bahan
-from app.utils.response import error_response, success_response
+from cafe.services import bahan_service
+from cafe.utils.id_generator import preview_id_bahan
+from cafe.utils.response import error_response, success_response
 
 bahan_bp = Blueprint('bahan_api', __name__)
 

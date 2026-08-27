@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from app.services import kasir_service, pemasukan_service
-from app.utils.response import error_response, success_response
+from cafe.services import kasir_service, pemasukan_service
+from cafe.utils.response import error_response, success_response
 
 kasir_bp = Blueprint('kasir_api', __name__)
 

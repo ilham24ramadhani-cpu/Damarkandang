@@ -1,20 +1,20 @@
 """Modul Kelola Bahan & Keuangan — Cafe Damarkandang."""
 
-from app.database import init_db
-from app.routes.pages import pages_bp
-from app.routes.jenis_bahan_routes import jenis_bahan_bp
-from app.routes.bahan_routes import bahan_bp
-from app.routes.pembelian_routes import pembelian_bp
-from app.routes.keuangan_routes import keuangan_bp
-from app.routes.penyesuaian_routes import stok_bp
+from cafe.database import init_db
+from cafe.routes.pages import pages_bp
+from cafe.routes.jenis_bahan_routes import jenis_bahan_bp
+from cafe.routes.bahan_routes import bahan_bp
+from cafe.routes.pembelian_routes import pembelian_bp
+from cafe.routes.keuangan_routes import keuangan_bp
+from cafe.routes.penyesuaian_routes import stok_bp
 
 
-from app.routes.menu_routes import menu_bp
-from app.routes.kasir_routes import kasir_bp
-from app.routes.laporan_routes import laporan_bp
-from app.routes.pembayaran_routes import pembayaran_bp
-from app.routes.jenis_keuangan_routes import jenis_keuangan_bp
-from app.services import jenis_keuangan_service
+from cafe.routes.menu_routes import menu_bp
+from cafe.routes.kasir_routes import kasir_bp
+from cafe.routes.laporan_routes import laporan_bp
+from cafe.routes.pembayaran_routes import pembayaran_bp
+from cafe.routes.jenis_keuangan_routes import jenis_keuangan_bp
+from cafe.services import jenis_keuangan_service
 
 
 def init_cafe_module(app, db, client=None):

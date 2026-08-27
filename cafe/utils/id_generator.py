@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.database import get_db
+from cafe.database import get_db
 
 
 def _next_seq(counter_key):

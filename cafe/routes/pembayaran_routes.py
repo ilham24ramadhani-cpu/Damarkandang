@@ -2,8 +2,8 @@ import os
 import uuid
 from flask import Blueprint, request, current_app
 from werkzeug.utils import secure_filename
-from app.services import pembayaran_service
-from app.utils.response import error_response, success_response
+from cafe.services import pembayaran_service
+from cafe.utils.response import error_response, success_response
 
 pembayaran_bp = Blueprint('pembayaran_api', __name__)
 

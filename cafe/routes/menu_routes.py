@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from app.services import menu_service
-from app.utils.response import error_response, success_response
+from cafe.services import menu_service
+from cafe.utils.response import error_response, success_response
 
 menu_bp = Blueprint('menu_api', __name__)
 
