@@ -7,7 +7,7 @@ endblock %} {% block content %}
     keuangan
   </p>
 </div>
-<ul class="nav nav-tabs mb-4" role="tablist">
+<ul class="nav nav-tabs cafe-tabs mb-4" role="tablist">
   <li class="nav-item">
     <button
       class="nav-link active"
@@ -44,7 +44,7 @@ endblock %} {% block content %}
 </ul>
 <div class="tab-content">
   <div class="tab-pane fade show active" id="tabJenis">
-    <div class="d-flex justify-content-between mb-3">
+    <div class="cafe-toolbar mb-3">
       <span class="text-muted"
         >Master jenis bahan — kategori: Minuman, Makanan, Kopral, Roasted,
         Skincare</span
@@ -74,7 +74,7 @@ endblock %} {% block content %}
     </div>
   </div>
   <div class="tab-pane fade" id="tabMenu">
-    <div class="d-flex justify-content-between mb-3">
+    <div class="cafe-toolbar mb-3">
       <span class="text-muted"
         >Produk jualan beserta resep bahan — kategori: Minuman, Makanan,
         Kopral, Roasted, Skincare</span
@@ -92,7 +92,7 @@ endblock %} {% block content %}
               <th>Produk</th>
               <th>Kategori</th>
               <th>Modal</th>
-              <th>Keuntungan</th>
+              <th>Margin (%)</th>
               <th>Harga Jual</th>
               <th>Resep</th>
               <th>Status</th>
@@ -105,7 +105,7 @@ endblock %} {% block content %}
     </div>
   </div>
   <div class="tab-pane fade" id="tabPembayaran">
-    <div class="d-flex justify-content-between mb-3">
+    <div class="cafe-toolbar mb-3">
       <span class="text-muted"
         >Master metode pembayaran (Cash, QRIS, Debit) — gambar & rekening
         opsional</span
@@ -134,7 +134,7 @@ endblock %} {% block content %}
     </div>
   </div>
   <div class="tab-pane fade" id="tabJenisPg">
-    <div class="d-flex justify-content-between mb-3">
+    <div class="cafe-toolbar mb-3">
       <span class="text-muted"
         >Master jenis pengeluaran — <strong>Bahan Baku</strong> otomatis dari
         pembelian</span
@@ -162,7 +162,7 @@ endblock %} {% block content %}
     </div>
   </div>
   <div class="tab-pane fade" id="tabJenisPm">
-    <div class="d-flex justify-content-between mb-3">
+    <div class="cafe-toolbar mb-3">
       <span class="text-muted"
         >Master jenis pemasukan — <strong>Penjualan</strong> otomatis dari
         penjualan lunas (pengurangan stok)</span
@@ -392,11 +392,11 @@ endblock %} {% block content %}
             Kg, <strong>pcs</strong> untuk Kopral/kemasan. Modal dihitung
             otomatis.
           </p>
-          <div class="row g-2 mb-1 small text-muted fw-semibold">
-            <div class="col-5">Bahan</div>
-            <div class="col-2">Jumlah</div>
-            <div class="col-4">Biaya Modal</div>
-            <div class="col-1"></div>
+          <div class="row g-2 mb-1 small text-muted fw-semibold d-none d-md-flex resep-head">
+            <div class="col-md-5">Bahan</div>
+            <div class="col-md-2">Jumlah</div>
+            <div class="col-md-4">Biaya Modal (HPP)</div>
+            <div class="col-md-1"></div>
           </div>
           <div id="resepRows"></div>
           <button
@@ -409,7 +409,7 @@ endblock %} {% block content %}
           <hr />
           <div class="row g-3 align-items-end">
             <div class="col-md-4">
-              <label class="form-label">Total Modal</label>
+              <label class="form-label">Total Modal (HPP)</label>
               <input id="menuModal" class="form-control" readonly value="Rp0" />
             </div>
             <div class="col-md-4">
@@ -424,14 +424,14 @@ endblock %} {% block content %}
                 required
               />
               <div class="form-text">
-                Isi harga jual. Keuntungan dihitung otomatis dari modal.
+                Isi harga jual. Margin dihitung otomatis dari HPP.
               </div>
             </div>
             <div class="col-md-4">
-              <label class="form-label">Keuntungan (otomatis)</label>
+              <label class="form-label">Margin (%) otomatis</label>
               <input id="menuMargin" class="form-control" readonly value="0%" />
               <div class="form-text">
-                Contoh modal Rp2.000, jual Rp2.600 → 30%
+                ((Harga Jual − HPP) / Harga Jual) × 100. Contoh HPP Rp2.000, jual Rp2.500 → 20%
               </div>
             </div>
           </div>
@@ -581,5 +581,5 @@ endblock %} {% block content %}
   </div>
 </div>
 {% endblock %} {% block extra_js %}
-<script src="{{ url_for('static', filename='js/cafe_kelola_data.js') }}?v=20260824a"></script>
+<script src="{{ url_for('static', filename='js/cafe_kelola_data.js') }}?v=20260829a"></script>
 {% endblock %}

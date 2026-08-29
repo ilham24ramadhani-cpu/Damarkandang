@@ -262,6 +262,16 @@ body {
    RESPONSIVE — Drawer sidebar + konten mobile (≤ 991.98px, sama seperti Bootstrap lg)
    ============================================= */
 @media (max-width: 991.98px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    display: block;
+  }
+
   /* ---- Sidebar: overlay mode ---- */
   .sidebar {
     width: 260px;
@@ -312,6 +322,8 @@ body {
   .home {
     left: 0 !important;
     width: 100% !important;
+    max-width: 100%;
+    min-width: 0;
     padding: 10px;
   }
 
@@ -348,13 +360,15 @@ body {
     flex-shrink: 0;
   }
 
-  /* Brand text: truncate on very small screens */
-  .home .navbar .fw-bold.fs-5 {
-    font-size: 0.85rem !important;
+  /* Brand text: keep readable, don't clip too early */
+  .home .navbar .fw-bold.fs-5,
+  .home .navbar .navbar-brand-text {
+    font-size: 0.95rem !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 140px;
+    max-width: none;
+    min-width: 0;
   }
 
   /* Hide search bar on mobile */
@@ -432,9 +446,11 @@ body {
   }
 
   /* ---- Page header: stack vertically ---- */
-  .d-flex.justify-content-between.align-items-center.mb-4 {
+  .d-flex.justify-content-between.align-items-center.mb-4,
+  .d-flex.justify-content-between.align-items-center.mb-3,
+  .d-flex.justify-content-between.align-items-start.flex-wrap {
     flex-direction: column !important;
-    align-items: flex-start !important;
+    align-items: stretch !important;
     gap: 0.75rem;
   }
 
@@ -456,6 +472,20 @@ body {
     height: 60px;
   }
 }
+
+@media (max-width: 575.98px) {
+  #statisticsCards .col-lg-3,
+  #statisticsCards .col-md-3,
+  #statisticsCards .col-sm-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .home .navbar .navbar-brand-text .badge {
+    font-size: 0.65rem;
+  }
+}
+
 .navbar form .form-control {
   width: 280px; /* atur panjang input */
   transition: width 0.3s ease;

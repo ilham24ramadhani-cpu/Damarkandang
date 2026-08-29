@@ -26,7 +26,7 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/cafe_module.css') }}"
+      href="{{ url_for('static', filename='css/cafe_module.css') }}?v=20260829a"
     />
     {% block extra_css %}{% endblock %}
   </head>
@@ -40,23 +40,105 @@
       {% include 'partials/sidebar_damarkandang.html' %}
     {% endif %}
     <section class="home">
-      <nav class="navbar px-3">
-        <div class="d-flex align-items-center gap-2">
-          <i class="bx bx-menu mobile-toggle"></i>
-          <span class="fw-bold fs-5"
-            >{{ cafe_name|default('Damarkandang') }}
-            {% if session.get('role') == 'Owner' %}
-              <span class="badge bg-warning text-dark ms-2">Owner</span>
-            {% elif session.get('role') == 'Karyawan' %}
-              <span class="badge bg-info ms-2">Karyawan</span>
-            {% else %}
-              <span class="badge bg-primary ms-2">Admin</span>
-            {% endif %}
-          </span>
+      <nav class="navbar fixed-top bg-white shadow-sm px-3">
+        <div
+          class="container-fluid d-flex align-items-center justify-content-between gap-2 px-0"
+        >
+          <div class="d-flex align-items-center min-w-0">
+            <button
+              class="navbar-hamburger d-none"
+              aria-label="Toggle sidebar"
+              type="button"
+            >
+              <i class="bi bi-list"></i>
+            </button>
+            <span class="fw-bold fs-5 navbar-brand-text">
+              {{ cafe_name|default('Damarkandang') }}
+              {% if session.get('role') == 'Owner' %}
+                <span class="badge bg-warning text-dark ms-1">Owner</span>
+              {% elif session.get('role') == 'Karyawan' %}
+                <span class="badge bg-info ms-1">Karyawan</span>
+              {% else %}
+                <span class="badge bg-primary ms-1">Admin</span>
+              {% endif %}
+            </span>
+          </div>
+          <ul
+            class="navbar-icons d-flex align-items-center list-unstyled mb-0"
+            style="gap: 0.75rem"
+          >
+            <li class="nav-item dropdown">
+              <a
+                class="text-dark fs-4 dropdown-toggle d-flex align-items-center"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-badge"></i>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow"
+                aria-labelledby="userDropdown"
+              >
+                <li><h6 class="dropdown-header">Akun</h6></li>
+                {% if session.get('role') == 'Owner' %}
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('profile_owner') }}"
+                    >Profil Saya</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{{ url_for('pengaturan_owner') }}"
+                    >Pengaturan</a
+                  >
+                </li>
+                {% elif session.get('role') == 'Karyawan' %}
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{{ url_for('profile_karyawan') }}"
+                    >Profil Saya</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{{ url_for('pengaturan_karyawan') }}"
+                    >Pengaturan</a
+                  >
+                </li>
+                {% else %}
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('profile') }}"
+                    >Profil Saya</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('pengaturan') }}"
+                    >Pengaturan</a
+                  >
+                </li>
+                {% endif %}
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a
+                    class="dropdown-item text-danger"
+                    href="#"
+                    onclick="handleLogout(event)"
+                    >Logout</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
       </nav>
-      <div class="container-fluid py-4 px-4">
-        {% block content %}{% endblock %}
+      <div class="content cafe-main">
+        <div class="container-fluid px-0">{% block content %}{% endblock %}</div>
       </div>
     </section>
     <div

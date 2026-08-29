@@ -162,7 +162,7 @@
             return `${x.nama_bahan} ${x.jumlah_gram}g`;
           })
           .join(", ");
-        const margin = r.margin_persen != null ? `${r.margin_persen}%` : "-";
+        const margin = formatMarginDisplay(r.biaya_modal || 0, r.harga_jual);
         return `<tr><td>${r.id_menu}</td><td>${r.nama_menu}</td><td>${r.kategori || "-"}</td>
       <td>${formatRupiah(r.biaya_modal || 0)}</td><td>${margin}</td><td>${formatRupiah(r.harga_jual)}</td>
       <td><small>${resep || "-"}</small></td><td><span class="badge ${r.status === "aktif" ? "bg-success" : "bg-secondary"}">${r.status}</span></td>
@@ -211,14 +211,14 @@
   function hitungMarginPersen(modal, hargaJual) {
     const m = Number(modal) || 0;
     const h = Number(hargaJual) || 0;
-    if (m <= 0) return 0;
-    return Math.round(((h - m) / m) * 10000) / 100;
+    if (h <= 0) return 0;
+    return Math.round(((h - m) / h) * 10000) / 100;
   }
 
   function formatMarginDisplay(modal, hargaJual) {
     const m = Number(modal) || 0;
     const h = Number(hargaJual) || 0;
-    if (m <= 0 || h <= 0) return "-";
+    if (h <= 0) return "-";
     const margin = hitungMarginPersen(m, h);
     const text = Number.isInteger(margin) ? String(margin) : margin.toFixed(2);
     return `${text}%`;
@@ -315,15 +315,24 @@
           )
           .join("")
       : '<option value="">Belum ada bahan untuk kategori ini</option>';
-    row.innerHTML = `<div class="col-5"><select class="form-select resep-bahan" required>${optionsHtml}</select></div>
-      <div class="col-2">
+    row.innerHTML = `<div class="col-12 col-md-5">
+        <label class="form-label d-md-none small mb-1">Bahan</label>
+        <select class="form-select resep-bahan" required>${optionsHtml}</select>
+      </div>
+      <div class="col-6 col-md-2">
+        <label class="form-label d-md-none small mb-1">Jumlah</label>
         <div class="input-group input-group-sm">
           <input type="number" class="form-control resep-qty" min="1" step="1" placeholder="gram" value="${qtyVal}" required />
           <span class="input-group-text resep-satuan-label">gram</span>
         </div>
       </div>
-      <div class="col-4"><input type="text" class="form-control resep-biaya" readonly value="Rp0" /></div>
-      <div class="col-1"><button type="button" class="btn btn-outline-danger btn-sm w-100 btn-del-resep">&times;</button></div>`;
+      <div class="col-5 col-md-4">
+        <label class="form-label d-md-none small mb-1">Biaya Modal</label>
+        <input type="text" class="form-control resep-biaya" readonly value="Rp0" />
+      </div>
+      <div class="col-1 col-md-1 d-flex align-items-end align-items-md-center">
+        <button type="button" class="btn btn-outline-danger btn-sm w-100 btn-del-resep" aria-label="Hapus bahan">&times;</button>
+      </div>`;
     wrap.appendChild(row);
     syncResepRowSatuan(row);
     refreshResepBiaya(row);

@@ -155,19 +155,27 @@ def _parse_margin(data, default=0):
         raise ValueError('Persentase keuntungan tidak valid')
     if margin < 0:
         raise ValueError('Persentase keuntungan tidak boleh negatif')
+    if margin >= 100:
+        raise ValueError('Persentase keuntungan harus di bawah 100%')
     return margin
 
 
 def _harga_jual_dari_modal(modal, margin_persen):
-    """Harga jual = modal + (modal × margin%). Contoh modal 2000, 30% → 2600."""
-    return int(round(float(modal) * (1 + float(margin_persen) / 100.0)))
+    """Harga jual = HPP / (1 − margin%). Contoh HPP 2000, margin 20% → 2500."""
+    m = float(margin_persen)
+    if m >= 100:
+        raise ValueError('Persentase keuntungan harus di bawah 100%')
+    denom = 1 - m / 100.0
+    if denom <= 0:
+        raise ValueError('Persentase keuntungan tidak valid')
+    return int(round(float(modal) / denom))
 
 
 def _margin_dari_harga(modal, harga):
-    """Keuntungan % = ((harga jual − modal) / modal) × 100. Modal 0 → 0%."""
-    if modal <= 0:
+    """Margin (%) = ((harga jual − HPP) / harga jual) × 100. Harga 0 → 0%."""
+    if harga <= 0:
         return 0.0
-    return round(((float(harga) - float(modal)) / float(modal)) * 100, 2)
+    return round(((float(harga) - float(modal)) / float(harga)) * 100, 2)
 
 
 def _parse_harga_jual(data):
@@ -183,8 +191,8 @@ def _parse_harga_jual(data):
 def _resolve_harga_dan_margin(data, modal):
     """
     Prioritas:
-    1. Jika harga_jual dikirim → simpan harga itu, keuntungan % dihitung dari modal.
-    2. Jika hanya margin_persen / keuntungan_persen dikirim → hitung harga jual dari modal.
+    1. Jika harga_jual dikirim → simpan harga itu, margin % = ((HJ − HPP) / HJ) × 100.
+    2. Jika hanya margin_persen / keuntungan_persen dikirim → hitung harga jual dari HPP.
     3. Default → harga jual = modal, keuntungan 0%.
     """
     has_margin = 'margin_persen' in data or 'keuntungan_persen' in data
